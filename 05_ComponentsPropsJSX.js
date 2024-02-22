@@ -74,3 +74,32 @@
 //      a. React can figure that out on its own, essentially..
 
 // Lesson 38. Creating More Components
+
+// Lesson 39. JavaScript Logic in Components
+
+// 1. Since components are just JS functions, any JS can be executed in them.
+//      a. Variables and JS functions can be declared above the return template inside the function component.
+//          i. That code is then executed as soon as the function component is called (i.e. when the component is initialized).
+//      b. The JS variables, functions, etc. can then be embedded into the return template with the help of JSX syntax.
+
+// Lesson 40. Separation of Concerns
+
+// 1. Before single page apps, apps had one file for HTML, one for JS, and one for CSS.
+//      a. Basically, one technology per file was the traditional 'separation of concerns'.
+// 2. As pages became more interactive, they eventually became single page applications (SPAs), where JS started to determine the UI and the content in general.
+//      a. In other words, JS became more and more in charge/control of the HTML in webpages, which lead to SPAs.
+// 3. The fact that logic and UI are so tightly coupled in modern web applications, is the reason why a React component contains the data, the logic, and the appearance/view of one piece of the UI.
+//      a. In fact, it's the fundamental reason why React is all about components.
+//      b. The same is also true for most other modern frontend frameworks.
+// 4. Content and logic are co-located in react projects/apps.
+//      a. Co-located simply means that elements that change together should be located as close as possible to each other.
+//      b. Therefore, since content and logic are tightly coupled together, it makes sense that they are co-located together.
+// 5. In the case of React apps, instead of one technology per file, there is one component per file.
+//      a. One component that contains data, logic, and appearance/view all 'mixed' together.
+// 6. React does actually have separation of concerns.
+//      a. It's just not one 'concern' per file, as it has traditionally been, but one 'concern' per component.
+//      b. Each component is only concerned with one piece of the UI.
+//          i. Then, within each of these components, the three concerns of HTML, CSS, and JS are all 'mixed' together.
+//      d. Compared to the traditional separation of concerns, this is a completely new paradigm.
+
+// Lesson 41. Styling React Applications
