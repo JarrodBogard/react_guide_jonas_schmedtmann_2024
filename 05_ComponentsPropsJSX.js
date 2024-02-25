@@ -306,3 +306,14 @@
 //      a. The difference is that in the template literal a dollar sign must be placed in front of the curly braces.
 // 3. This is a great way to add css classes to jsx elements, conditionally.
 //      a. Use a template literal for the classNames prop instead of quotations and then insert a ternary operator conditional.
+
+// Lesson 54. Section Summary
+
+// Each component is a self-contained piece of the user interface, which includes its own data, its own js logic, and its own appearance (i.e. view).
+//      a. In practical terms, the view is written using a declarative syntax that's called jsx.
+//      b. It's this block of jsx that is returned by each component.
+//      c. The jsx describes exactly what the user will see on the screen when they use the application.
+
+// Lesson 55. CHALLENGE #2: Profile Card (v2)
+
+// 1. When three or more conditions exist for a conditional rendering feature, implement multiple returns above the return template via if/else statements, or using the && operator in the jsx with a short-circuit conditional for each condition.
