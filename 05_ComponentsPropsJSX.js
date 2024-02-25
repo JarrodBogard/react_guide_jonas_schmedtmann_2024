@@ -103,3 +103,206 @@
 //      d. Compared to the traditional separation of concerns, this is a completely new paradigm.
 
 // Lesson 41. Styling React Applications
+
+// 1. React doesn't handle styling.
+//      a. The reason is that react is actually more of a library than a framework.
+//      b. Therefore, it doesn't have a preferred method for styling components.
+//      C. Choose between different options including: external css files, sass files, css modules, styled components, or Tailwind
+// 2. In JSX, inline styles are defined with JavaScript objects.
+//      a. Therefore, JSX syntax is required to instantiate and use JS objects for inline styles, in react components.
+//      b. In tradition html web development, inline styles are not good practice because of the separation of concerns.
+//          i. There, css is in a separate file and is never mixed with the markup (i.e. html) file.
+//      c. In React, inline styles are completely fine.
+//      d. In JS, all css property names have been converted to camel case notation.
+//          i. In react, the camel case notation must also be used for css property names via/in JSX syntax.
+//      e. The values for the css property names inside the JS object must always be strings.
+//      f. This is the easiest way of adding styling to individual components.
+// 3. Css style sheets can be imported into react component files with standard JS syntax(i.e. 'import' ... or 'import' ... 'from' ...).
+//      a. It is webpack that will handle importing the styles from the css file and injecting them into the application.
+// 4. In react, className is used in place of class, because class is already a reserved keyword in JavaScript.
+
+// Lesson 42. Passing and Receiving Props
+
+// 1. Props are how data is passed between components.
+//      a. In particular, from parent components to child components.
+//          i. Imagine props as being like a communication channel between a parent and a child component.
+// 2. First, pass the props into the receiving child component function call, within the parent component return template.
+// 3. Second, receive the props in the child component function, which were passed in to it by the parent component.
+//      a. Typically, the parent component is in a separate file from its child components.
+//          i. Thus, the parent component file is where the props are passed into the child component function call.
+//          ii. And, the child component file is where the props are received from the parent component, by the child component function.
+//          iii. Effectively, when the parent component executes/renders it will execute the child component function call and pass a props object to the child component, which will contain any/all of the props passed to the child.
+//          iiii. JS syntax is required to retreive the values from the props object in the child component function.
+// 4. Props are passed just like normal attributes.
+//      a. Prop means property.
+//      b. The order in which props are passed is irrelevant.
+//      c. Whenever passing values as props that are not strings, JSX syntax must be used.
+//      d. Anything (i.e. any data type) can be passed as a prop (e.g. arrays, objects, numbers, boolean, etc.).
+// 5. JSX syntax is required to access and use props in the child component return template, for rendering the passed data.
+
+// Lesson 43. Props, Immutability, and One-Way Data Flow
+
+// 1. Props are used in React to pass data from parent components to child components.
+//      a. Essentially, information/data is being passed down the component tree.
+//      b. Basically, props are used to communicate between parent and child components.
+//      c. Therefore, props are an essential react tool to configure and also to customize components.
+//      d. Imagine props as settings that can be used to allow a parent component to control what its child component should look like and how it should work.
+//          i. In that regard, props are just like arguments passed to regular JavaScript functions.
+//          ii. One parent function passing arguments to its child/nested/helper function.
+//      e. Anything (i.e. any data type) can be passed into JavaScript functions.
+//          i. The same is true for props in function components.
+//          ii. Pass any type of value as a prop (e.g. strings, numbers, arrays, objects, functions, and even other React components).
+// 2. The data that React uses to render a component is made out of props and state.
+// 3. State is basically internal component data that can be updated by the component's logic (i.e. by the component itself).
+// 4. Props, on the other hand, are data that is coming from a parent component, so from an external/outside source.
+//      a. It's the parent component which controls the prop data and is responsible for making any updates to it (via state???).
+//          i. Importantly, it cannot be modified by the child component.
+//          ii. Instead, props can only be updated by the parent component itself.
+// 5. Props are immutable.
+//      a. They cannot be changed, they are read-only.
+//      b. If at any point it seems like props need to be mutated, what is actually needed is state, because state is for data that changes over time.
+//      c. This is because 'props' are just an object.
+//          i. If the props object is changed in a child component, it would also affect the same data in the parent component because that's how reference data types work in JS.
+//              1. When a JS object (i.e. reference type) is copied and mutated, the original object will also be mutated.
+//      d. If a function component mutates an object, that is located outside its function block/scope, that function has created a so-called side-effect (i.e. if a child component changes the props object of its parent component).
+//          i. A side-effect happens whenever some data that's located outside of a function is changed within that same function.
+//          ii. Alt def: Whenever data that is defined/declared outside of a function, is changed/mutated by that function, a side-effect occurs as a result.
+//      e. React is concerned with pure functions, so functions without side effects, at least when dealing with component data.
+//      f. Components should be pure functions in terms of their props and state.
+//          i. This allows React to optimize apps and avoid bugs that can occur when external data is manipulated.
+//          ii. This idea of immutability can be extended to react development in general.
+//      g. IMPORTANT: Components should never mutate any data that is written outside of its function scope.
+// 6. One-way data flow means that in React applications, data can only be passed from parent to child components, which happens by using props.
+//      a. Data can flow from parents to children but never the opposite way.
+//          i. Data only flows down the component tree from top to bottom.
+//      b. Other frameworks such as Angular actually employ a two-way data flow.
+//      c. The reason react uses one-way data flow is that it makes applications more predictable and easier to understand for developers.
+//          i. This is because it is easier to understand and see where the data is coming from when it only flows in one direction.
+//          ii. It also makes applications way easier to debug, because there is more control over the data and the flow of data.
+//          iii. Additionally, two-way data binding is usually less efficient and less performant to implement.
+
+// Lesson 44. CHALLENGE #1: Profile Card (v1)
+
+// Lesson 45. The Rules of JSX
+
+// 1. JSX works essentially just like HTML.
+//      a. It has a very similar syntax, but it can enter a JS mode by using curly braces anywhere in its markup where a value is expected.
+//      b. In JS mode, JS expressions can be implemented (i.e. anything that produces a value).
+//      c. These JS expression include referencing variables, creating arrays or objects, looping over arrays using the map method, or using operators such as the ternary operator,
+//      d. Statements are now allows
+//          i. In JSX, if/else statements, for loops, switch statements, or any other types of statements cannot be implemented.
+//          ii. This is because non of these produce or return values.
+// 2. JSX produces a JS expression.
+//      a. A piece of JSX is just like any other JS expression.
+//          i. JS expressions always produce/output/return a value.
+//          ii. JSX is converted behind-the-scenes to a React.createElement function call, which is in fact an expression.
+//      b. This fact has two important implications:
+//          1.
+//              i. It means that separate/other pieces of JSX can be placed inside the curly braces of the JSX expression (i.e. inside the JS mode).
+//              ii. This is possible because any type of JS expression can be placed inside the curly braces, and that includes the expressions produced by JSX.
+//              iii. Consider ternary operators and short-circuiting as examples.
+//          2.
+//              i. JSX can be written anywhere inside a component.
+//              ii. JSX can be assigned to variables, used inside of if/else statements, passed into functions, etc.
+//                      1. This is done outside/above the return template within the function component.
+// 3. Each piece of JSX can have only one root element (i.e. one parent element).
+//      a. If a piece of JSX needs to return two elements, without a parent element, a react fragment can be implemented.
+
+// Lesson 46. Rendering Lists
+
+// 1. The basic concept of rendering a list is that an array contains elements and the desired result is that a component is created for each element of the array.
+//      a. The map method is used to render lists.
+//          i. This is because for each element of the original array, the map method will create a new component.
+//      b. When rendering lists, each item that is rendered needs a unique key property.
+//          i. The key prop is internal to React, and it needs a key value for each item/element of the rendered list to optimize performance of the app.
+//          ii. The key value should be unique to each element.
+// 2. Semantic markup is important.
+//      a. In react, it is common to implement ul/li tags for rendering lists, where the ul wraps the elements of the list  (i.e. wraps the list items).
+//          i. Use a ul tag to wrap the jsx mapping expression
+//          ii. Pass each element of the array as a prop to the child component function call, within the jsx mapping expression
+//          iii. Ensure that a unique key is passed to the key prop as well.
+//          iiii. Best practice is to pass the key to the child component function call in the jsx mapping expression of the parent component.
+//          iiiii. The child function component can access the prop object and render each prop element and its associated data via an li tag.
+//          iiiiii. Using the ul in the parent and li in the child ensures that semantic markup is accurate/correct.
+
+// 3. By using the map method on the list (i.e. the original array), it will create a new array.
+//      a. In this array, in each position, there will be a new component.
+//      b. Pass, as a prop, the current object/element and also pass a unique key via the special key prop, which optimizes performance in react.
+// 4. forEach will not work for rendering lists because jsx is required and the only way to get jsx is by creating a new array.
+//      a. This is what the map method does.
+//          i. It creates a new array, which will contain the new components.
+//          ii. React can then render the new array of components to the UI.
+
+// Lesson 47. Conditional Rendering With &&
+
+// 1. Conditional rendering is about rendering some piece of JSX to the UI, based on a condition.
+//      a. When using the length of an array, in react, to conditionally render an element/component, it's important that a true/false value is used for the conditional and not a truthy/falsey value.
+//          i. This is because React cannot render true/false values but it could render a falsey value of 0.
+//                  1. If the value is truthy/falsey (e.g. the length of an array equals zero) then a short-circuit conditional that is implementing the && operator will return that zero (i.e. falsey) value to the UI.
+//          ii. This is because an && short-circuit conditional always returns the first falsey value it evaluates and does not go any further (i.e. it "short-circuits" at the first falsey value).
+//                  1. If the result of the conditional is a falsey value of zero, then zero will be returned to the UI, since it is the first falsey value of the short-circuit.
+//          iii. Converting the conditional from a truthy/falsey value to a true/false value will improve the functionality of the conditional render.
+
+// 2. React does not render true/false values from JSX syntax to the UI, but it will render certain truthy/falsey values.
+//      a. Therefore, truthy/falsey values should not be used on their own.
+//      b. They should be used with a comparison operator to instead return a true or false value.
+//      c. This is so that the underlying truthy/falsey value (e.g. 0) is not returned to the UI.
+//      d. Always use a true/false condition for conditionally rendering components/elements/jsx in react.
+// 3. Many devs say that short-circuits should never be used to conditionally render jsx.
+//      a. Ternary operators may be a better option for conditional rendering.
+
+// Lesson 48. Conditional Rendering With Ternaries
+
+// 1. When using the ternary operator to conditionally render a component, the else (i.e. what comes after the colon) portion of the expression can simply return null, if nothing should be rendered for that condition, while the if (i.e. what comes after the question mark) portion can render a component/element/jsx.
+// 2. The advantage of using the ternary operator is that it can display some alternative jsx based on a condition.
+// 3. Inside JS mode, only code which produces values, or a value, can be used.
+//      a. If/else statements do not produce values.
+// 4. To use ternary operators or short-circuits, inside of JSX, JS mode must be implemented using curly braces.
+//      a. Within jsx, the ternary operators and short-circuits will only work inside the curly braces.
+
+// Lesson 49. Conditional Rendering With Multiple Returns
+
+// 1. Another option for conditionally rendering jsx is by using multiple returns.
+//      a. Each component can only return one block of jsx, but that return could be configured to depend on a condition, or conditions.
+//          i. Other returns can be added to a function component based on some condition(s).
+//      b. If/else conditions can be set outside/above the return template of a function component.
+//          i. Within the if/else statement, other return templates can be created based on multiple conditions.
+//          ii. Simply ensure that any styling/features/functionality is duplicated for the alternate return(s) so that the component maintains consistency (i.e. the same design and functionality) when rendering the alternative return template (i.e. JSX/elements/components)
+//              1. For this reason, 'early' returns are more useful when rendering entire components conditionally.
+// 2. Returning null is a common technique when the desired result of a condition is to return nothing to the UI.
+
+// Lesson 50. Extracting JSX Into a New Component
+
+// 1. When the jsx in a component is getting too complex, extract it into its own component.
+//      a. If the jsx that was extracted into a child component depends on some value that was in the parent component, pass it to the child component as a prop.
+// 2. Start building components, and when they get too big, extract parts of them into other components.
+
+// Lesson 51. Destructuring Props
+
+// 1. Each time props are passed into a component, that component will then automatically receive the props object, which will contain all the props that were passed to it.
+// 2. All components receive the props object.
+// 3. If the props object is empty it will return undefined.
+// 4. Props on the prop object can be destructured in the argument line of the function component.
+//      a. As with all object destructuring in JS, the name of the props need to match exactly the name of the props that are passed to it by the parent component.
+
+// Lesson 52. React Fragments
+
+// 1. JSX, no matter where it is defined, can return only one root element.
+// 2. React fragments (i.e. <React.Fragment><React.Fragment/> or <></>) allow different jsx elements within a component to be grouped together, without a parent div.
+//      a. The benefit is that it does not leave any trace in the HTML tree (i.e. the DOM).
+//      b. When using fragments, no new html elements are created.
+//          i. It is as if the fragment wrapper does not exist.
+// 3. If keys need to be passed to a piece of jsx (e.g. rendering list items) the React.Fragment format, for fragments, is required.
+// 4. React fragments are a very simple concept, which basically allows components to return more than one single root element in the return template.
+//      a. Multiple jsx elements can be grouped together and wrapped in a fragment which can then be returned by the component as a single jsx element.
+//          i. This does not leave any trace of the fragment in the DOM tree (i.e. the browser).
+
+// Lesson 53. Setting Classes and Text Conditionally
+
+// 1. A template literal is JavaScript, therefore JavaScript mode can be entered by using a dollar sign and curly braces, within the backtics.
+//      a. Since this is a JS expression, anything included must return a value.
+//          i. Ternary operators, short-circuits, JS variables, and function calls that return values can be included inside the JS mode.
+// 2. This is a similar idea to entering JavaScript mode inside of JSX.
+//      a. The difference is that in the template literal a dollar sign must be placed in front of the curly braces.
+// 3. This is a great way to add css classes to jsx elements, conditionally.
+//      a. Use a template literal for the classNames prop instead of quotations and then insert a ternary operator conditional.
