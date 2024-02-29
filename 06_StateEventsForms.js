@@ -70,10 +70,9 @@
 //      a. They cannot be called inside an if statement, another function, a for/while loop, etc.
 // 8. State variables should only be updated using the useState setter function, not manually.
 
-
 // Lesson 61. Don't Set State Manually!
 
-// 1. React cannot detect udpates to normal js variables inside of components. 
+// 1. React cannot detect udpates to normal js variables inside of components.
 //      a. It cannot track those, which is why React provides the setter function.
 //          i. The setter function is a functional way of updating the state value, but without mutating it.
 // 2. React is about immutability.
@@ -86,12 +85,12 @@
 // Lesson 62. The Mechanics of State
 
 // 1. React is declarative, not imperative.
-//      a. The DOM is never manipulated directly.    
+//      a. The DOM is never manipulated directly.
 // 2. React updates a component view by re-rendering that entire component whenever the underlying data (i.e. state) changes.
 //      a. Re-rendering means that react calls the component function again (i.e. executes the function component again).
 // 3. Conceptually, imagine this as react removing the entire view, and replacing it with a new view, each time a re-render occurs.
 // 4. React preserves the component state throughout re-renders.
-    //  a. Even though a component can be rendered and re-rendered over and over, the state will not be reset unless the component disappears from the UI entirely, which is called unmounting (e.g. refreshing the browser forces an unmount???).
+//  a. Even though a component can be rendered and re-rendered over and over, the state will not be reset unless the component disappears from the UI entirely, which is called unmounting (e.g. refreshing the browser forces an unmount???).
 // 5. It is when state is updated that a component is automatically re-rendered.
 //      a. When react detects that state has been changed, it will automatically re-render the component, which will result in an updated view for that component.
 // 6. As React developers, in order to update a component view, update the component's state.
@@ -121,7 +120,7 @@
 // Lesson 66. More Thoughts About State + State Guidelines
 
 // 1. Each component manages its own state.
-//      a. Even if rendering the same component multiple times on one page, each of the component instances will operate independently from all the others. 
+//      a. Even if rendering the same component multiple times on one page, each of the component instances will operate independently from all the others.
 //          i. Each instance operates independently of all others and each has its own independent state.
 //      b. State really is isolated inside of each component.
 // 2. Think of the entire application view/ui as a function of state.
@@ -129,122 +128,31 @@
 // 3. A react application is fundamentally about changing state over time, and correctly displaying that state at all times.
 //      a. This is the application of the declarative approach to building user interfaces.
 // 4. Instead of viewing a ui as explicit DOM manipulations, with state, view a ui as a reflection of data changing over time.
-
-And, as you know by now, we describe
-
-that reflection of data using state,
-
-event handlers, and JSX.
-
-So, we describe the UI, React does the rest.
-
-
-
-So, first of all, you should create
-
-a new state variable for any data
-
-that a component should keep track of over time.
-
-And the easy way of figuring this out
-
-is to think of variables that need to change
-
-at some point in the future.
-
-So, if you're used to building apps in Vanilla JavaScript,
-
-those would be variables defined
-
-with "let" or with "var," or also an array, or object,
-
-that you mutate over the applications lifecycle.
-
-So, in React, you use state for those.
-
-Another way of figuring out when you need state is this.
-
-Whenever you want something in a component
-
-to be dynamic, create a piece of state
-
-related to that "thing," and then update the state
-
-when the "thing" should change,
-
-or, in other words, when you need it to be dynamic.
-
-Now, since this "thing" is a bit abstract,
-
-let's think of a modal window
-
-that can be either open or closed.
-
-So, for a modal window, we can create a state variable
-
-called, "isOpen," that will keep track
-
-of whether the model is currently open or not.
-
-Then, when "isOpen" is true, we display the window
-
-on the screen, and if it's false, we hide it.
-
-Simple, right?
-
-So, whenever you want to change
-
-the way a component looks like,
-
-or the data that it displays,
-
-just update its state, which you usually do
-
-inside an event handler function.
-
-Now, when you're actually building your components,
-
-it's gonna be useful to always imagine the components view,
-
-so the component rendered on the screen, as a reflection
-
-of state changing and evolving over time.
-
-Finally, there is one common mistake
-
-that many beginners make, which is to use state
-
-for every single variable that you need in a component,
-
-but that's really not necessary.
-
-So, do not use state for variables
-
-that should not trigger a re-render, okay?
-
-Because that will just cause unnecessary re-renders
-
-which can cause performance issues.
-
-So, it's very common to need
-
-some variables that are not state.
-
-And so for those, you can just use
-
-regular variables defined with "const."
+// 5. That reflection of data is described by using state, event handlers, and jsx.
+//      a. Describe the ui/components, and let react do the rest.
+// 6. Create a new state variable for any data that a component should keep track of over time.
+//      a. Think of variables that need to change at some point.
+// 7. In vanilla js the let or var variables, or an array, or object would be used to handle updates/changes and make mutations over the applications lifecycle.
+//      a. In react, useState is used to handle these update/changes to the data and ui.
+// 8. Whenever something in a component should be dynamic, create a piece of state related to that element.
+//      a. Then update the state when the element should change.
+//          i. Think of a modal window that can be either open or closed.
+//              1. Use a state variable that will keep track of whether the modal is currently open or not.
+//              2. When true, display the window, and when false, hide the window.
+// 9. To change a component's view, or the data that it displays, update its state.
+//      a. This is commonly done via an event handler function.
+// 10. When building components, it's useful to imagine the components view as a reflection of state changing and evolving over time.
+// 11. One common mistake that many beginners make is to use state variables for every single variable that's needed in a component.
+//      a. IMPORTANT: Do not use state for variables that should not trigger a re-render.
+//          i. That will cause unnecessary re-renders, which can cause performance issues.
+//          ii. It's very common to need some variables that are not state.
+//          iii. For those, just use regular variables defined with "const".
 
 // Lesson 67. A Vanilla JavaScript Implementation
 
 // Lesson 68. CHALLENGE #1: Date Counter (v1)
 
-So as always, the same three steps.
-
-So first declaring the state variable,
-
-then use it in the JSX, and then update it.
-
-ternary operators can be nested inside other ternary operators!
+// 1. IMPORTANT: Ternary operators can be nested inside of other ternary operators.
 
 // Lesson 69. Starting a New Project: The "Far Away" Travel List
 
@@ -252,237 +160,37 @@ ternary operators can be nested inside other ternary operators!
 
 // Lesson 71. Rendering the Items List
 
-So a list item, because that's usually what direct children
-
-of the UI or of the UL element should be.
-
-// Lesson 72. Building a Form and Handling Submissions  
-
-And first off, when we build forms in React,
-
-we use the normal HTML form element.
-
-And here let's use again JavaScript mode.
-
-So in order to pass an actual number one,
-
-and not the string of one,
-
-for creating many select options, 
-
-we will create an array with the numbers from one to 20,
-
-and then we will loop over that array,
-
-and basically create a list of option elements.
-
-this can be used as a template for other use cases not just select options.
-
-
-
-So let's do that, and we will use a nice trick,
-
-which is called array.from.
-
-And it's not really important how this function works.
-
-So let's just follow this here.
-
-And actually, we will do this all the time in React.
-
-So this trick is actually quite important.
-
-So as a first parameter here,
-
-we can pass in an object with a length property,
-
-and set that to 20.
-
-So that will then create an empty array with 20 elements.
-
-And then as a second part,
-
-we can pass in basically something like a map function.
-
-So that will receive as a first argument,
-
-the current value, and as a second argument, the index.
-
-And so here, we are only interested in that index,
-
-because we will now return that index,
-
-which starts at zero plus one.
-
-And so then we get an array, which goes from one to 20.
-
-
-
-And now all we need to do, is to again use the map method,
-
-and loop over this
-
-to create our list of these option elements.
-
-So again, specifying the value,
-
-and now that value is simply numb and we need the key.
-
-And that key is also numb.
-
-So remember how that when we render a list,
-
-we need to give each of the elements a unique key.
-
-So the number here is of course, unique.
-
-And then here also numb.
-
-
-So right here where we have that map,
-
-we need to also pass in the key.
-
-So that key again needs to be something unique.
-
-And what is unique here is this ID property,
-
-not yet material, that's user three.
-
-And so now these IDs are unique.
-
-And so those are the ones, we are going to use.
-
-So usually when we get an array of objects,
-
-each of these objects should have an id.
-
-So that's then the perfect candidate
-
-for using here as a key.
-
-the key should be placed where the map is used
-
-
-
-So basically, what we want to happen
-
-is when we click on this button here,
-
-we want this form to be submitted.
-
-And so we can then React to this form submission
-
-with an event handler.
-
-
-
-And again, really, really important to understand
-
-is that we don't call the function here.
-
-So we don't do this.
-
-Instead React, we'll call the function for us
-
-as soon as the onSubmit event happens.
-
-
-
-Where I mentioned that in a single page application,
-
-like we want to build with React,
-
-we usually can submit a form without the page reloading.
-
-So in other words, what we want
-
-is for this page not to reload.
-
-And so we need to disable this default behavior of HTML.
-
-So the way we do that is to accept the event here.
-
-And then here, we can use event.preventDefault.
-
-And again, this is normal JavaScript right here.
-
-So if you're used to working with forms
-
-in Vanilla JavaScript,
-
-then you probably have seen this before.
-
-So let's see what happens now when we submit,
-
-yeah then nothing happens.
-
-So that's actually exactly what we want now.
-
-We want no reload.
-
-So we want to stay here on the same page.
-
-So building a single page application.
-
-
-Now what's with this E here actually, how does it get here?
-
-Well as soon as the submit event happens,
-
-React will call this handleSubmit function.
-
-And when it does so,
-
-it will pass into the function, the event object.
-
-So an object with all the information
-
-about the current event.
-
-So again, that's very similar
-
-to what happens already in Vanilla JavaScript.
-
-So here we could also basically write this.
-
-So this would be exactly the same,
-
-but it's then a bit more obvious what happens.
-
-So here this function gets the event,
-
-and then we call handleSubmit with that event.
-
-But that's kind of redundant.
-
-
-
-So we could do like this, net end for example,
-
-create a function, handleClick.
-
-So instead of handleSubmit.
-
-So that would also work,
-
-but it would only work on the click of the button.
-
-So that would then not work, when we hit enter while here.
-
-But we do actually want that.
-
-And so let's instead, listen for the submit event.
-
-
-
-So that would then not work, when we hit enter while here.
-
-But we do actually want that.
-
-And so let's instead, listen for the submit event.
-
-And by doing so, we are leveraging the power of HTML forms.
+// 1. List items (i.e. li tags) are the direct children of the ol/ul tags.
+//      a. In react, these elements should be used together to create and render lists, in most cases.
+
+// Lesson 72. Building a Form and Handling Submissions
+
+// 1. By default, input field values are only string data types (i.e. they only record user inputs as strings, even when a number is entered).
+// 2. To convert input values to number data types, the Number function wrapper (i.e. Number()) or the plus sign (i.e. '+') should be placed in front of the event.target.value.
+//      a. This technique should be implemented when passing an input field value (i.e. event.target.value) to a state setter function, for updating a state variable that should be a number type.
+// 3. When dealing with elements like select tags that have many nested option tags, create an array between the select opening and closing tags with the desired length, and then loop over that array, and create a list of option elements.
+//      a. This can be used as a template for other use cases not just select/option tags.
+//          i. EXAMPLE: {Array.from({ length: <number> }, (_, i) => i + 1).map((num) => (<option value={num} key={num}>{num}</option>))}
+//              1. NOTE: The array constructor has a 'from' method, which receives two arguments.
+//                  a. The first argument is an object which contains a length prop, which can be set to the desired length.
+//                  b. The second argument is a callback function.
+//                      i. The callback function receives two arguments.
+//                          1. The current value for each position created in the array, which is not needed for this technique.
+//                              a. Set the current value to an underscore (i.e. "_").
+//                          2. The index of each position created in the array.
+//                              a. The length of the array configured by the first 'from' argument determines how many elements will be created in the array.
+//                              b. Each element will be the index plus 1 (i.e. i + 1) as determined by the return of the callback function.
+//              2. NOTE: The map method is called on the newly created array to create an option tag for each element in the array.
+//                  a. The number previously created for each element will be used as the value and key props as well as the text content for each option tag.
+// 4. When rendering lists via the map method, the id of an element is commonly used as the key prop value for each element.
+// 5. In react, the onSubmit event listener is used to handle form submissions.
+// 6. In a single page application, submit forms without reloading the page.
+//      a. Disable the default behavior of html form submission by using event.preventDefault().
+//          i. This prevents the page from reloading and keeps the app on the same page.
+// 7. When submitting forms via an event handler, the event object will contain all the information about the current event that was submitted.
+// 8. Use onSubmit over onClick when submitting forms.
+//      a. onSubmit allows the enter key and the button within the form to submit the form.
+//          i. If an onClick is applied to the button, but no onSubmit listener is attached to the form, then only clicking the button will submit the form.
 
 // Lesson 73. Controlled Elements
 
@@ -520,19 +228,19 @@ And by doing so, we are leveraging the power of HTML forms.
 //      b. Use that piece of state on the element that should be controlled.
 //          i. Make the element take the value of the state variable.
 //      c. Update that state variable.
-//          i. Use event handlers/listeners and the useState setter function to accomplish this. 
+//          i. Use event handlers/listeners and the useState setter function to accomplish this.
 // 11. After completing these steps, it's react which is in charge of the state and essentially the entire element.
 //      a. That's the reason why this technique is called controlled element.
 // 12. In react, using Date.now() for an id is a simple, but not a recommended way, to quickly create an id for an item that needs one.
 // 13. Be sure to include necessary conditionals inside of event handler functions to prevent state from being updated when improper user data is entered.
 //      a. Also, reset state to its initial value following form/input submissions via the setter functions.
-//          i. This is commonly done within a submit event handler function following submission of a form. 
+//          i. This is commonly done within a submit event handler function following submission of a form.
 // 14. Data (i.e. props) can only flow down the tree but not up or sideways.
 
 // Lesson 74. State vs. Props
 
 // State is internal data.
-//      a. Data that is controlled by the component in which it is declared. 
+//      a. Data that is controlled by the component in which it is declared.
 // 2. Props are external data.
 //      a. Data that is controlled by the parent component.
 //      b. Props can be thought of as function parameters (i.e. passed to child function component as arguments).
