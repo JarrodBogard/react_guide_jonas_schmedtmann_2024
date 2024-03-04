@@ -684,5 +684,3 @@ then we chose the public API, basically,
 and therefore allowed the user
 
 to customize it to their needs.
-
-// Lesson 123. Project Setup and Walkthrough
