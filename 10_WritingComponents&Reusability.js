@@ -37,7 +37,7 @@
 //      a. If it's possible to reuse a piece of a big component, and that part is needed elsewhere in the app as well, then extract that portion of code into a new component.
 // 5. The responsibilities and complexity of the component:
 //      a. If a component is handling too many different things, or if it's relying on too many props (i.e. it has too many pieces of state or effects), or the code is way too complex or too confusing, separate the component into smaller components.
-// 6. Personal coding style: 
+// 6. Personal coding style:
 //      a. It's important to feel productive when working with components.
 //          i. If smaller functions or components are preferred, then split up big components into smaller ones, and vice versa.
 // 7. General guidlines:
@@ -66,7 +66,7 @@
 // 2. Typically, small components shouldn't be broken down further if they handle just one responsiblity already.
 //      a. This would be pointless and make the app more confusing.
 // 3. One common techique for creating a new component that renders list items is to have one component for the list, which would then loop over that list (i.e. array of data), and then display one component for each elementin the array.
-// 4. Optional chaining is an effective approach for ensuring that a value is extracted from a variable. 
+// 4. Optional chaining is an effective approach for ensuring that a value is extracted from a variable.
 //      a. This can be accomplished by using the nullish collasceing operator with dot notation.
 //          i. Place a question mark before the dot, after the variable or property in question.
 //              1. This tells js to only check for the value stored on the variable, or the property on the variable, if that variable or property is not undefined.
@@ -98,17 +98,17 @@
 
 // Lesson 110. Prop Drilling
 
-// 1. Prop drilling involves passing a prop (i.e. piece of data) down multiple component tree levels via multiple components until it reaches the component that needs it. 
+// 1. Prop drilling involves passing a prop (i.e. piece of data) down multiple component tree levels via multiple components until it reaches the component that needs it.
 
 // Lesson 111. Component Composition
 
 // 1. Component composition is where the parent component does not include a predefined child component in its jsx return template
-//      a. Instead, it accepts children with the children prop. 
-//      b. Child components can then be passed into the parent by placing them between the opening and closing tags of the parent 
+//      a. Instead, it accepts children with the children prop.
+//      b. Child components can then be passed into the parent by placing them between the opening and closing tags of the parent
 //          i. Instead of making the parent component a self-closing tag, use opening and closing tags for the parent.
 //          ii. Pass any child components between the tags.
 //              1. These will be accepted into the parent component as chilren via the children prop.
-// 2. Component composition works because of the children prop. 
+// 2. Component composition works because of the children prop.
 //      a. It makes the component highly reusable.
 //      b. Essentially, with component composition, there is an empty slot created between the opening and closing tags of the component.
 //          i. The slot can receive any component as a child, which will then be handled by the children prop on the parent component.
@@ -151,15 +151,15 @@
 //          i. However, since this is essentially creating a new jsx element, it will require a parent wrapper (i.e. a fragment) to ensure the rule of rendering one jsx element per component is maintained
 // 4. The explicit approach is a viable pattern when multiple jsx elements (i.e. components) need to be included/passed in the parent, by giving them separate prop names.
 
-// vs code trick 
+// vs code trick
 
-// 1. In vs code, pressing ctrl + click, while hovering over a function/component name, will result in navigation to the origin of the function/component in the app. 
+// 1. In vs code, pressing ctrl + click, while hovering over a function/component name, will result in navigation to the origin of the function/component in the app.
 //      a. Navigate from where a component is called into the place where it is actually defined using ctrl + click.
 
 // Lesson 115. Building a Reusable Star Rating Component
 
-// 1. For testing stand alone/reusable components in a react app, remove the index.css file, and app file imports on the index.js, and import the stand alone component. 
-//      a. Additionally, remove the app component from the root.render method and insert the stand alone component in its place. 
+// 1. For testing stand alone/reusable components in a react app, remove the index.css file, and app file imports on the index.js, and import the stand alone component.
+//      a. Additionally, remove the app component from the root.render method and insert the stand alone component in its place.
 //      b. This is an easy way to test a stand alone component without having to create a new project.
 // 2. For creating an array of items in a component:
 //      a. Enter js mode inside the jsx template.
@@ -173,84 +173,36 @@
 //      g. Remember that array indices are zero-based, therefore one should be added to the current index if the desired result is to start with position one at one.
 //      h. Additionally, the length could be passed as a prop so that it can be set dynamically and independently for each component invocation.
 //      i. Additionally, the length prop that is received in the component could contain a default value just in case a dynamic value is not passed to it.
+//          1. Default values can be set on destructured props. I
+//          2. If the prop is undefined it will be assigned to the default value.
+// 3. For data that does not change in the application, it can be placed outside/above the function component.
+//      a. The data will not be re-evaluated/regenerated each time the component re-renders.
+//          i. This will improve the performance of the application.
 
+consider data such as inline style objects that do not depend on props. if they do depend on props then they will need to be included in the function And so, now I actually need to take this object here
 
+back into the component because now we will specify
 
-And now we can do even better
+some properties which will depend on the props.
 
-which is to take this entire object
+And so the props are, of course, only accessible
 
-which will never change.
+inside the component.
 
-And it doesn't depend on anything
+So, then this object will have to live
 
-that is here in the component.
-
-And we can place it completely outside of the component.
-
-And by doing so,
-
-this object here will not have to be regenerated
-
-by JavaScript each time that this component here rerenders
-
-because, otherwise, each time that a component does rerender
-
-dysfunction will get called again.
-
-And so then this object would also get regenerated again.
-
-And so that's not necessary.
-
-And so we can just place it outside here.
-
-
-So what we need to do is to set a default value
-
-for the rating.
-
-So how do we do that?
-
-Well, we can actually leverage the power of destructuring
-
-in JavaScript because whenever we destructure an object,
-
-we can actually set a default value as we do so.
-
-So here we are actually destructuring the props object.
-
-And so if max rating doesn't exist,
-
-we can set a default simply by writing this.
-
-And so if we save this now,
-
-then we are back to having our five stars by default.
-
-And so this is a very common way of setting default props
-
-in React applications.
-
-default values can be set on destructured props. if the prop is undefined it will be assigned to the default value
+inside the component as well.
 
 // Lesson 116. Creating the Stars
 
-when using direct svg in react they do not have any height. they need a wrapper element like a span tag with preconfigured styles to give the svg elements height
-
-the role prop in html will assign the specified role to an html element to give it the same functionality as the tag that is specified in the role. e.g. <span role="button"> - span will have button functionality
-
-
-And so this is basically
-
-what we have been doing all the time,
-
-which is to pass an event handler function
-
-from the component that owns the state, so this one,
-
-right into a component
-
-// that wants to actually update that state. define onClick listener which uses parent state setter function and pass the onClick with event handler into the component in the parent component that is created via the map method. extract the prop and set to onClick in the appropriate html element in the jsx element that creates the component
+// 1. When using an svg element in react,  it does not have any height by default.
+//      a. It will need a wrapper element like a span tag, with preconfigured styles, to give the svg element height.
+// 2. The role prop in html will assign the specified role to an html element.
+//      a. This will give the element the same functionality as the tag that is specified in the role (e.g. <span role="button"> - span will have button functionality).
+// 3. Pass an event handler function or a state setter function from the component that defines and controls the state, into a child component that will update that state.
+//      a. Define a prop with the same name as the native event listener that needs to be executed by the child component.
+//      b. Pass the state setter function or the event handler function that executes the state setter function to that prop.
+//      c. Extract that prop in the child component and set the native event listener to the event handler or state setter prop with the same event listener name on the appropriate html element in the jsx of the child component.
 
 // Lesson 117. Handling Hover Events
 
@@ -261,3 +213,476 @@ right into a component
 //  b. onMouseEnter
 //  c. onMouseLeave
 //  d. Each of the above events could handle a different event handler, or update a different piece of state, depending on the desired result.
+
+// Lesson 118. Props as a Component API
+
+// 1. When building a reusable component, carefully consider what props the component needs.
+But in any case, it's always a good idea
+
+to think in terms of there being a creator
+
+and a consumer of a component,
+
+so, different entities, even if it's just yourself.
+
+So, basically, the creator
+
+is the person building a component,
+
+and defining what props the component can accept.
+
+While the consumer uses the component
+
+somewhere in the application,
+
+by specifying values for the props.
+
+Now, the reason for the separation
+
+between creator and consumer,
+
+even if you're just working on your own,
+
+is that if we have this mindset,
+
+we can think of the component's props
+
+as the public API of the component.
+
+So, as a component creator,
+
+when we choose what props
+
+the consumer is allowed to pass in,
+
+we are essentially defining
+
+the public interface of our component.
+
+And, at the same time, we are choosing
+
+how much complexity of the component
+
+we want to expose to the consumer of the API.
+
+Because, in the end,
+
+a component is basically just an abstraction.
+
+So, we are encapsulating a part of the UI
+
+and the associated logic into a component,
+
+and allow consumers
+
+to interact with that component via props.
+
+That's basically what creating a new component is.
+
+But, anyway, when we decide about
+
+what props to allow in a component,
+
+we need to find a good balance on how strict we want to be.
+
+So about how many props we want to enable for configuration.
+
+// too few props 
+but it might also make the component not flexible enough,
+
+or maybe even straight out, useless for the consumer.
+
+// too many 
+
+But the point is that exposing so many props,
+
+might make the component
+
+way too hard to use for the consumer,
+
+because we're exposing too much complexity.
+
+And speaking of complexity,
+
+you'll end up with very complex code,
+
+if you want to allow so many props.
+
+So, when deciding on the right API for your components,
+
+try to strike the right balance
+
+between too little and too many props,
+
+and a balance that works well,
+
+for both the creator,
+
+and the consumer of the component,
+
+based on the project's needs.
+
+Now, if for some reason
+
+you really need to expose so many props,
+
+make sure to at least provide
+
+some good default values for many of them.
+
+// Lesson 119. Improving Reusability With Props
+
+it's a good idea to provide default values.
+
+So, we already learned that we can do that
+
+by providing the default values during destructuring.
+
+
+Now, sometimes consumers or users of the component
+
+want to have even more control over the styling.
+
+So, sometimes it's a good idea to allow users
+
+to pass in a class name.
+
+accept the class name,
+
+and by default, it will just be an empty class name,
+
+and then, we just edit here to the overall container.
+
+So class name
+
+and then, class name like this.
+
+So, for example, if the user wants to somehow change
+
+the font style, they can do that right inside
+
+this class name that they pass in,
+
+and so, that class name will then be added here.
+
+It will then change the font family of our component.
+
+
+So really, really important to always give default values.
+
+is to just check if messages.length
+
+is equal to the maxRating.
+
+And if that is the case, then that means
+
+that a messages array was passed in.
+
+And if not, then we just do exactly what we had before.
+
+
+// and that is to allow the consumer to set a default rating.
+
+So basically, we will initialize our rating state
+
+with whatever default rating comes into the prop.
+
+And if that prop is not specified,
+
+then that's simply exactly the zero that we had before.
+
+Now, maybe you heard or read that we should never initialize
+
+state from props.
+
+However, this is only true if you want the state variable
+
+to stay in sync with that passed in props,
+
+or in other words, if you want the state value
+
+to update in case that the prop value is also updated.
+
+However, that is clearly not the case here.
+
+So, we are really only using this defaultRating here
+
+basically as seed data,
+
+so really just as the initial state,
+
+and we don't care whether this value here
+
+maybe changes somewhere else in the application,
+
+so outside this component.
+
+And, therefore, this is perfectly fine and normal to do.
+
+All right, so it's really no problem to initialize
+
+your state based on a prop.
+
+So this was more relevant in the old days of React
+
+before we had hooks, but now,
+
+that's really no longer a problem.
+
+
+For example, we could say that
+
+we want the colors here to change according to the rating,
+
+or we could allow for some different spacing
+
+between the stars.
+
+We could also allow the consumer to specify on
+
+which site this text label here appears.
+
+So maybe they want it on the left or at the top
+
+or at the bottom here,
+
+// ???
+
+passing in a setter function as a prop from parent to the ratings child component 
+
+an onSetRating
+
+handler.
+
+And so, in this case, what this component wants to pass in
+
+is simply this function right here.
+
+And this one by default doesn't need any
+
+default value
+
+And now, it's very simple.
+
+All we have to do here is, on the handle rating,
+
+is to not only set the internal rating,
+
+but also to basically set the external rating.
+
+So, we can now just say onSetRating.
+
+also set that external rating.
+
+And with this, we now gave the outside test component,
+
+basically, the ability to get access to that internal state
+
+right inside this component.
+
+Okay, and now, if we change this here,
+
+you see that it did, indeed, get updated to seven.
+
+So, this additional configuration,
+
+so this final prop that we updated here,
+
+or that we actually added here to our component,
+
+was really, really important
+
+because without this, this component would really just be
+
+presentational in the end.
+
+// Lesson 120. PropTypes
+
+So with proptypes, we can basically specify the type
+
+of value that we expect the consumer
+
+of the component to pass in for each of the props.
+
+
+For example, we can define that this max rating
+
+here really must be a number and nothing else.
+
+And this is what we call type checking.
+
+So again, checking each type of the prop
+
+and specifying what type they need to have.
+
+Now, if you really care about this, you should actually just
+
+use TypeScript instead of JavaScript.
+
+
+
+and for that we import the proptypes object
+
+from the proptypes package.
+
+So there's no need to install this proptypes package here
+
+in this case because Create-React-App already comes
+
+with this package pre-installed.
+
+But we do need to import it here.
+
+So just as we did here, because it is actually
+
+a separate package from React itself.
+
+
+Now, okay. And now in order to do the type checking,
+
+let's use our component.
+
+So that's star rating.
+
+And then on this component
+
+we specify the proptypes property.
+
+And here it's important that we write it with a lower case.
+
+So proptypes net then here we then assign
+
+those proptypes an object.
+
+So, again, we imported proptypes here with the capital P
+
+but the property name here is with this lowercase p.
+
+Okay. And now here for each of the props,
+
+we can specify the type.
+
+
+And then now we actually use that proptypes object
+
+that we imported in the very beginning.
+
+And so now all we need to do is to use one
+
+of the validators that is inside this object.
+
+So here we can simply say proptypes.number, and that's it.
+
+
+And so then here we get this problem or this warning here
+
+which says invalid prop of max rating.
+
+And that's because it has the type
+
+of string instead of the expected number.
+
+And it is these warnings right here that will then
+
+allow other developers to catch bugs like this
+
+
+these propTypes are declared outside of the function component they are used in
+
+
+Now, we can also chain the is required property here
+
+which just as the name says
+
+will then make this prop required.
+
+So somewhere here, we probably have one without.
+
+Yeah, so this one doesn't have the max rating.
+
+And then immediately we get this warning down here.
+
+All right, but in our case, we actually
+
+have some default values
+
+for all of our props already defined.
+
+And so it doesn't make sense then to mark
+
+any of them as required.
+
+So by default, you shouldn't use this one.
+
+So instead just use default values
+
+for all or most of your props.
+
+
+And so we basically have one of these validators here
+
+for all the types that we can imagine. strings arrays, numbers, func for functions, objects, etc, bool for Boolean, 
+
+
+So proptypes and this one is a func,
+
+which stands for function.
+
+
+And as you see here, adding proptypes is also a nice way
+
+of documenting our components because this type
+
+definition right here makes it really obvious what kind
+
+of data we are expecting.
+
+this was mostly just to show you
+
+that you can use this yourself
+
+in case that you have some component like this
+
+which you want to make highly reusable
+
+across multiple applications
+
+or even just inside one application.
+
+// Lesson 121. CHALLENGE #1: Text Expander Component
+
+We will then usually have the text directly in here,
+
+for example, instead of relying on the props
+
+and on default values of those props.
+
+But, again, here we are striving for maximum reusability.
+
+
+And, again, this is necessary,
+
+because we want this component here
+
+to be 100% reusable and standalone.
+
+So, it cannot depend on any external styles.
+
+
+So, this text expander component is now highly reusability
+
+and it hides all the complexity from the user,
+
+so from the consumer of this component,
+
+which again is really nice and really important.
+
+So, as the developer of this component,
+
+then we chose the public API, basically,
+
+and therefore allowed the user
+
+to customize it to their needs.
+
+// Lesson 123. Project Setup and Walkthrough
