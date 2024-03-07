@@ -130,8 +130,6 @@
 
 // Lesson 113. Using Composition to Make a Reusable Box
 
-//// REVIEW ////
-
 // 1. As previosly mentioned, the application component tree is very readable in the main app file, when implementing component composition.
 //      a. It's very clear what exactly is happening in the application.
 //          i. The structure of the app is very easy to view and understand.
