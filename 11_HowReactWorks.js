@@ -1,137 +1,25 @@
 // Lesson 123. Project Setup and Walkthrough
 
-And so now all we have to do is to take this folder,
-
-open it up in VS Code, like this,
-
-and then we need to install all the packages.
-
-So the node modules folder,
-
-which is the folder where all the NPM packages are installed
-
-is, of course, not here.
-
-So all the libraries like React, ReactDOM, and so on,
-
-they are not here.
-
-So we need to install them,
-
-but that's fortunately very easy.
-
-So let's open up our terminal here.
-
-Ah, it's here in View.
-
-And, oh, that's really small here.
-
-And as always, make sure that you are in the correct folder.
-
-And then all we have to do is to say npm install,
-
-or npm i for short.
-
-So hit Enter, and then this will install all the packages
-
-that are necessary for this Create-React-Application.
-
-So it will get this information
-
-here from this package.json file.
-
-
-So this at here is basically modern JavaScript
-
-which is the same as this here,
-
-so basically reading something out of an array,
-
-
-remember to use the react dev tools component tab to view and access the component tree of a react app
-
-
-And again, by double-clicking,
-
-VS Code will then highlight all of them.
+// 1. When opening a pre-made react project for the first time on a local machine, be sure to run 'npm install' to download all the necessary packages.
+//      a. All of the information on the packages that are needed for a react project are stored in the package.json file.
+//          i. npm will use the package.json info to install the necessary packages/libraries for the react app. 
 
 // Lesson 124. Components, Instances, and Elements
 
-And also this is a pretty common interview question.
-
-And so this topic is definitely worth learning about.
-
-And let's begin by taking another look at components.
-
-So components are what we write
-
-in order to describe a piece of the user interface.  description of a piece of ui
-
-And the component is just a regular JavaScript function,
-
-but it's a function that returns React elements.
-
-So it returns an element tree. a component is a function that returns a react element (element tree) usually written as jsx (using jsx syntax)
-
-And we usually write these elements using the JSX syntax.
-
-Now a component is a generic description of the UI.
-
-So we can essentially think of a component as a blueprint
-
-or a template, and it's out of this one blueprint
-
-or template that React then creates one
-
-or multiple component instances.
-
-Now, React does this each time that we use the component
-
-somewhere in our code. instances are created when components are used in the code, when they are invoked -> react interanally calls the compnent which creates an instance
-
-For example, the tap component that we saw
-
-in the last slide is used, so it is included three times
-
-in this app component.
-
-And so therefore, three instances of tap are placed
-
-in a component tree.
-
-So in our actual application.
-
-Behind the scenes, this happens
-
-because React will call the tap function three times.
-
-So one time for each instance.
-
-So we can say that an instance is like the actual
-
-physical manifestation of a component living
-
-in our componentry.
-
-While the component itself is really just a function
-
-that we wrote before being called.
-
-And actually, it's each instance
-
-that holds its own state and props
-
-and that also has its own life cycle.
-
-So basically, a component instance can be born,
-
-it can live for some time until it will eventually die.
-
-So it's a bit like a living organism really.
-
-Now in practice, we many times just use the terms component
-
-and component instance interchangeably.
+// 1. Components are written in order to describe a piece of the user interface (i.e. a description of a piece of ui).  
+//      a. The component is just a regular js function, but it's a function that returns react elements.
+//          i. A component is a function that returns a react element (element tree) usually written as jsx (using jsx syntax).
+//              1. It returns an element tree.
+//          ii. A component is a generic description of the UI.
+//      b. Essentially think of a component as a blueprint or a template.
+//          i. It's this blueprint that react uses to create/invoke one or multiple component instances.
+//      c. Each time a component is used/executed/invoked somewhere in the code, component instances are created by react.
+//          i. React interanally calls the component, which creates a component instance.
+//      d. A component instance is the physical manifestation of a component in the component tree.
+//          i. The component itself is just a function that was written to describe that component and what it should like and what it should do when called.
+//      e. Each instance holds its own state and props and it also has/manages its own lifecycle.
+//          i. A component instance can be born, it can live for some time, and then it will eventually die.
+//      f. Many times the terms component and component instance are used interchangeably.
 
 For example, we just say component life cycle
 

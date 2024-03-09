@@ -24,812 +24,118 @@
 
 // Lesson 79. Fundamentals of State Management
 
-So as you already know, we can use the useState function
-
-to create multiple pieces of state in order to track data
-
-that changes over the life cycle of an application.
-
-
-
-But I like to think of state management
-
-as deciding when we need to create new pieces of state,
-
-what types of state we need,
-
-where to place each piece of state inside our code base,
-
-and also how all the data should flow through the app.
-
-And to summarize all this,
-
-I like to use the analogy that state management
-
-is basically giving each piece of state
-
-a home within our code base.
-
-But as an application grows, the need to find the right home
-
-for each piece of state start to become really important,
-
-no matter if that home is the component
-
-where we first need that state,
-
-some parent component or even global state.
-
-
-
-So in React, each piece of state
-
-is either local state or global state.
-
-So local state is state that is only needed in one component
-
-or any few different components,
-
-like child or sibling components.
-
-We simply create a piece of local state
-
-using the useState function inside a certain component.
-
-And that piece of state is then only accessible
-
-to that exact component and maybe to its child components
-
-if we pass the state using props.
-
-Now going back to our Udemy app,
-
-an example of local state
-
-might be the input text in the search bar.
-
-So probably only that component
-
-needs to know about this data.
-
-And therefore, this is local state,
-
-so state local to that search bar component.
-
-Now about global state,
-
-this is state that many different components
-
-in the app might need access to.
-
-Therefore, when we define state as being global,
-
-that piece of state will become accessible
-
-to every single component in the entire app.
-
-It's shared between all components,
-
-and therefore, we can also call this shared state.
-
-In practice, we can define global state
-
-using React's Context API
-
-or also an external global state management library
-
-like Redux that you might have heard of.
-
-Now, in this Udemy app,
-
-one piece of global state is the shopping cart.
-
-So that piece of data is used all over the place here.
-
-So all these components need access
-
-to the shopping cart state,
-
-and therefore, it makes sense that this is global state.
-
-Now, this distinction between local
-
-and global state will matter more in large applications.
-
-
-
-And in fact, one important guideline in state management
-
-is to always start with local state
-
-and only move to global state if you really truly need it.
-
-
-
-
-So it all starts with you realizing
-
-that you need to store some data.
-
-Now when this happens, the first question to ask is,
-
-will this data change at some point in time?
-
-And if the answer is no,
-
-then all you need is a regular variable,
-
-so probably a const variable.
-
-However, if the data does need to change in the future,
-
-the next question is, it is possible to compute
-
-or to calculate this new data
-
-from an existing piece of state or props?
-
-If that's the case, then you should derive the state.
-
-So basically calculate it
-
-based on an already existing state or prop.
-
-And this is a pretty important concept,
-
-so there is a separate lecture
-
-on derived state later in the section.
-
-However, most of the time you cannot derive state.
-
-And so in that case, you need to ask yourself
-
-whether updating the state should re-render the component.
-
-Now, we have already learned before that updating state
-
-always re-renders a component,
-
-but there is actually something called a Ref
-
-which persists data over time like regular state,
-
-but does not re-render a component.
-
-So it's basically a special type of state
-
-that we will look at later.
-
-Now, most of the time you actually do want state
-
-to re-render the component.
-
-And so what you do is to create a new piece of state
-
-using the useState function,
-
-and you then place that new piece of state
-
-into the component that you are currently building.
-
-And so that's the always start with local state guideline
-
-that we talked about in the previous slide.
-
-And with this, we have completed
-
-the decision process of when to create state.
-
-So again, most of the time you will just create
-
-a new piece of state using the useState Hook,
-
-
-So if the state variable that we just created
-
-is only used by the current component,
-
-then simply leave it in that component, and you're done.
-
-So that's the end of the process right there.
-
-However, the state variable might also be necessary
-
-for a child component.
-
-And in that case, simply pass the state down
-
-into the child component by using props.
-
-So easy enough, right?
-
-Now, if the state variable is also necessary
-
-for one or a few sibling components
-
-or even for a parent component of your current component,
-
-it's time to move that state
-
-to the first common parent component.
-
-And in React, this is what we call lifting state up.
-
-And this is another one of those super important topics
-
-which we will actually start using in practice
-
-in the next video.
-
-Now finally, the state variable might be needed
-
-in even more than just a few siblings,
-
-so it might be necessary
-
-all over the place in the componentry.
-
-And what does that sound like to you?
-
-Well, that's right, that sounds just like global state.
-
+// 1. Use the useState function to create multiple pieces of state in order to track data that changes over the life cycle of an application.
+// 2. Think of state management as:
+//      a. Deciding when to create new pieces of state.
+//      b. What types of state are needed
+//      c. Where to place each piece of state inside the code base
+//      d. How all the data should flow through the app.
+// 3. Think of the analogy that state management is basically giving each piece of state (i.e. data) a 'home' within the code base of an app.
+//      a. As an application grows, the need to find the right home for each piece of state starts to become more important.
+//          i. Whether that's where the piece of state was first needed, some parent component, or even global state.
+// 4. In React, each piece of state is either local state or global state.
+//      a. Local state is state that is only needed in one component or a few different components, like child or sibling components.
+//          i. Simply create a piece of local state using the useState function inside a certain component.
+//          ii. That piece of state is then only accessible to that exact component and to its child components as needed, by passing that piece of state using props.
+//          iii. An example of local state might be the input text in a search bar.
+//                  1. Likely only that component needs to know about this data, therefore, this is local state (i.e. state local to that search bar component).
+//      b. Global state is state that many different components in the app might need access to.
+//          i. When a piece of state is defined as global state, that piece of state will become accessible to every single component in the entire app.
+//              1. It's shared between all components, and therefore, it can also be called shared state.
+//          ii. Global state can be defined using react's context api or also an external global state management library like Redux .
+//          iii. An example of global state is a shopping cart on a website.
+//                  1. That piece of data is used all over the webpage/app.
+//                      a. Many of the components in the app need access to the shopping cart state.
+//                          i. Therefore, it makes sense that it is global state.
+// 5. The distinctions between local and global state will matter more in large applications.
+// 6. One important guideline in state management is to always start with local state and only move to global state if/when needed.
+// 7. Using state starts with realizing when state is needed (i.e. when data needs to be stored and managed).
+// 8. Questions for when to implement state: 
+//      a. Will this data change at some point in time?
+//          i. If the answer is no, then all that is needed is a regular variable like a const variable.
+//      b. If the data does need to change in the future, the next question is, is it possible to compute or to calculate this new data from an existing piece of state (i.e. data) or props (i.e. data)?
+//          i. If the answer is yes, then the state should be derived from the current state variables (i.e. derived state).
+//              1. Basically, calculate the new state based on an already existing state or prop.
+//          ii. However, most of the time state cannot be derived.
+//      c. If the state cannot be derived, the next question is, should updating the state/data cause the component to re-render?
+//          i. Updating state variables - via the state setter function extracted from the useState hook - always re-renders a component.
+//              1. There is actually something called a ref which persists data over time like regular state, but does not re-render a component.
+//                  i. It's basically a special type of state.
+//          ii. If the answer is yes to re-rendering the component when the data changes, then a new state variable should be created via the useState function.
+//                  1. Place the new piece of state into the component that is being built.
+//                      a. This is the guideline for always starting with local state.
+//      d. With all these questions answered, the decision making process of when to create state has been completed.
+// 9. Summary: 
+//      a. Most of the time just create a new piece of state using the useState Hook.
+//      b. If the state variable just created is only used by the current component, then simply leave it in that component.
+//          i. However, the state variable might also be necessary for a child component.
+//              1. In that case, pass the state down into the child component by using props.
+//      c. If the state variable is needed in sibling components, or in the parent component of the current component, move that piece of state to the first common parent component for all components that need that state.
+//          i. This is called lifting state up.
+//      d. If the state variable is needed throughout the entire component tree, make it a piece of global state.
 
 // Lesson 80. Thinking About State and Lifting State Up
 
-So, remember that in React,
-
-we are not allowed to mutate state.
-
-So, we cannot do this.
-
-So, we can not simply push the new item
-
-into the items array
-
-because with that, we would be mutating.
-
-So, we would be changing this item's array right here.
-
-And again, that's really not allowed in React.
-
-And so, the solution here
-
-is to create a brand new array
-
-which contains all the current items, plus, the new one.
-
-So, let's return a new array
-
-and then, in there, we simply spread the current items
-
-and then we add another item
-
-which is simply called item.
-
-So, the item that we are receiving here.
-
-is that actually, we do not need these items
-
-in this current component.
-
-The only goal of the form component
-
-is to add new items to this array,
-
-but not to render it.
-
-Instead, remember that who renders these items
-
-is actually the packing list component.
-
-
-Well, we cannot pass it as a prop
-
-because the form is not a parent component of packing list,
-
-it is simply a sibling component.
-
-Instead, we now need to use a technique
-
-that I mentioned before,
-
-which is to lift up state.
-
-So, what we're going to do now
-
-is to take this state here,
-
-so this line of code,
-
-and we will move it to the closest common parent component.
-
-So, which one is that?
-
-Well, it's simply the app component, right?
-
-So, this component is both, a parent of the form
-
-and of the packing list
-
-which are the two components which need this state.
-
-And now let's take care here
-
-of this handleAddItems function.
-
-So actually, I will grab this entire function
-
-and move it here.
-
-And so now, all we have to do
-
-in order to enable the form to update the state
-
-is to pass in this handleAddItems function.
-
-Let's create a new prop
-
-and kind of a convention is to call this now onAddItems,
-
-handleAddItems.
-
-So, we could create a prop called handleAddItems
-
-and then pass it to function with the same name,
-
-but it's kind of a convention for it to be like this.
-
-So, it then becomes a bit more readable,
-
-like onAddItems, call handleAddItems,
-
-
-this is what happened.
-
-So, we now have our handleAddItems function
-
-right here in the app,
-
-which is exactly where the piece of state also lives.
-
-So, where we have the home of the items state.
-
-And so all the logic about updating that state
-
-is here in the same component.
-
-However, it is the form that is actually responsible
-
-for creating new items.
-
-And so, therefore, we need to give this component,
-
-so this form component here,
-
-access to a function that can update the state.
-
-And so, that function is handleAddItems.
-
-So, as I mentioned before,
-
-we can actually pass anything as a prop.
-
-And so, that includes functions.
-
-So, here we pass in handleAddItems as a prop
-
-and we call that prop onAddItems,
-
-which of course, again,
-
-could also be called handleAddItems
-
-which some people prefer,
-
-but many times, you will see this convention.
-
-So then, we come here, destructure the props
-
-and then we call that function
-
-whenever the form is submitted.
-
-And that's it.
-
-So, this is how we lift up state.
-
-So, basically what that means
-
-is that whenever multiple sibling components
-
-need access to the same state,
-
-we move that piece of state up
-
-to the first common parent component,
+// 1. In react state should not be mutated.
+//      a. Example: New items cannot simply be added to an array list (i.e. a piece of state), by pushing items onto the array.
+//          i. This would mutate the array list (i.e. it would mutate the state of the array).
+//          ii. The solution is to create a brand new array which contains all the current items, plus, the new item.
+//                  1. Return a new array, spread in the current items, and then add the new item.
+//                      a. When using the state setter function, the current state can be accessed by passing a callback function to it.
+//                          i. It then receives an argument, which is the current state.
+// 2. Commonly, event handler functions that update a piece of state are placed in the same component where the state variable is defined.
+// 3. Anything can be passed as a prop, including functions.
+//      a. Commonly, a state variable and an event handler function for updating that state will be defined in a single component.
+//      b. The event handler function will then be passed as a prop to any child components that need that event handler.
+//      c. The naming convention is to name the event handler with the first word being "handle" and the following words being a description of the action/event that is to be executed by the event handler.
+//          i. When passing event handlers as props, it is naming convention to remove the "handle" portion and replace it with "on".
+// 4. Lifting state up is the technique of moving a piece of state up to the first common parent component of all the components that need access to that piece of state.
 
 // Lesson 81. Reviewing "Lifting Up State"
 
-Well, lifting state up simply means
-
-to place some state in a component
-
-that is a parent of both components
-
-that need the piece of state in question.
-
-And now giving both these components access
-
-to the state is as easy
-
-as passing it down using props and that's it.
-
-So by lifting state up,
-
-we have just successfully shared
-
-one piece of state with multiple components
-
-in different positions in the component tree,
-
-which is something that we need to do
-
-all the time in React apps.
-
-And so it's really important
-
-that you get used to this pattern and remember,
-
-that we need this pattern in the first place
-
-as a direct consequence of React one-way data flow.
-
-
-Promotions only receive this data via props
-
-but as you know, we cannot mutate props.
-
-So that's one of the hard rules of React.
-
-So what we're asking here is
-
-if we have one-way data flow,
-
-so if data can only flow from parents to children,
-
-then how can the child component promotions update
-
-the state that lives in the parent component, checkout?
-
-Well, actually the solution is quite simple.
-
-All we have to do
-
-is to also pass the set coupons function
-
-down as a prop to the components
-
-who need to update the state.
-
-And so now that we have
-
-the set coupons function in promotions,
-
-once a new coupon is added,
-
-we can simply use set coupons to update the state
-
-that lives in the parent component.
-
-And this is actually exactly
-
-what we also did in the previous lecture
-
-with the difference that
-
-we didn't directly pass set items,
-
-but a function that uses set items
-
-to update the items,
-
-which is essentially the same thing.
-
-But anyway, we can call this technique
-
-of passing down a setter function,
-
-child-to-parent communication
-
-or also inverse data flow.
-
-Inverse because usually data only flows down
-
-but here we basically have a trick
-
-that allows us to basically
-
-have the data flowing up as well.
-
-Now of course, this is not truly flowing up
-
-but this workaround of passing down the setter function
-
-and use it to update the parent state
-
-is pretty close to actually
-
-having data flowing up the tree.
+// 1. Lifting state up simply means to place some state in a component that is a parent of all components that need that piece of state.
+//      a. To provide the child components with access to the piece of state, pass the state down to the child components as props.
+// 2. By lifting state up, state can be successfully shared with multiple components in different position in the component tree.
+// 3. This pattern is needed as a direct consequence of react's one-way data flow.
+// 4. Data flows in one direction in react apps, which is why props are required for child components to have access to data.
+//      i. Props allow components further down the component tree to access data from their parent components.
+//      ii. Passing a useState setter function as a prop to a child component is a common technique of child-to-parent communication.
+//          1. It is also called inverse data flow because it allows a child component to update state in the parent component via the setter function passed to it.
+//              a. It is inverse, because usually data only flows down, but this is a way of making data flow up.
+//                  i. It is not truly flowing up but it is a workaround for updating the parent's state variable.
 
 // Lesson 82. Deleting an Item: More Child-to-Parent Communication!
 
-Well, when we simply specify the function here like this,
-
-then React will call the function as the event happens,
-
-and it does so by passing in the event object.
-
-So we actually used this to our advantage in the form,
-
-so right here where we then received the event.
-
-But right now we do not want to receive the event,
-
-but instead the ID of the current item.
-
 // Lesson 83. Updating an Item: Complex Immutable Data Operation
 
-And remember, a controlled element means
-
-that the element has the value defined by some state
-
-and it also has an event handler
-
-which listens for the change
-
-and updates the state accordingly.
-
-
-And so now in order
-
-to update one of the objects in the array,
-
-we will simply loop over the entire items array
-
-using the map property
-
-which will then in the end return a brand new array
-
-with the same length of the initial items array.
-
-But one of the objects
-
-will then, of course, have been updated.
-
-So in the iteration, each of the elements is called an item.
-
-And then here is what we're gonna do.
-
-So whenever the item has the ID
-
-that is equal to the ID that we passed in,
-
-so which means that this is the object
-
-that we want to actually update,
-
-then we create a brand new object based on the current item,
-
-and then we set packed to the opposite of packed,
-
-so of item.packed.
-
-And that's it.
-
-And if else, so for all the other objects,
-
-we will simply return the current item.
-
-I want to emphasize that I covered exactly
-
-that this is how we update an object in an array
-
-in great depth, in the section where we review
-
-essential JavaScript for React.
+// 1. A controlled element is an element that has its value defined by some state variable.
+//      a. It also has an event handler which listens for an event to occur and then updates the state variable according to the changes made by the event.
+// 2. To update an object in an array: 
+//      a. Loop over the array using the map method.
+//      b. For each item of the array, use a conditional that checks for some validating feature of the current item such as an id.
+//          i. The current item with a matching id will be isolated for updating.
+//      c. Create a new object by using curly braces.
+//          i. Spread the current item/object into the new object.
+//      d. Set the object's properties that are to be updated to their new values.
+//      i. All the other objects will simply return their current item/object in the new array.
 
 // Lesson 84. Derived State
 
-So, essentially, derived state is simply state
-
-that is computed from another existing piece of state
-
-or also from props.
-
-
-So numItems is simply the number of items in the cart
-
-and totalPrice is the sum of all the prices in the cart.
-
-And so, all the data for these two pieces of state
-
-is actually already in the cart,
-
-so there's no need
-
-to create these additional state variables,
-
-and doing so is actually quite problematic,
-
-first, because now we have to keep all these states in sync.
-
-So, we need to be careful to always update them together.
-
-So, in this situation, whenever we update the cart,
-
-we will also need to manually update the number of items
-
-and the total price,
-
-otherwise our states would get out of sync.
-
-But updating these three states separately
-
-creates a second problem
-
-because that will then re-render the component three times
-
-which is absolutely unnecessary in this example.
-
-
-But updating these three states separately
-
-creates a second problem
-
-because that will then re-render the component three times
-
-which is absolutely unnecessary in this example.
-
-Instead, we can simply derive the numItems
-
-and totalPrice state from the cart
-
-and therefore solve all these problems
-
-because the cart already contains
-
-all the data that we need.
-
-So here, we simply calculate numItems as the cart length
-
-and totalPrice as the sum of all prices
-
-and store them in regular variables.
-
-There is no used date required here
-
-which will cause no unnecessary re-renders.
-
-The cart state acts as a single source of truth
-
-for these related pieces of state,
-
-making sure that everything will always stay in sync.
-
-And this works because updating the cart
-
-will re-render the component
-
-which means that the function is called again.
-
-And, so then, as all the code is executed, again,
-
-numItems and totalPrice will also, automatically,
-
-get recalculated.
-
-Now, of course, most of the time, we cannot derive state
-
-but whenever you have a situation like this one,
-
-where one state can easily be computed from another,
-
-always prefer derived state.
-
-So, don't create two state variables
-
-if you actually only need one.
-
-IMPORTANT: when an array contains a list of objects with a prop that needs to be summed/subtracted to derive the total of all the items in the list use the reduce method to simplify the calculation
+// 1. Derived state is simply state that is computed from another existing piece of state or props.
+// 2. Creating additional state when derived state could be used can create issues:
+//      a. State can become out-of-sync.
+//      b. Unnecessary re-renders will occur.
+// 3. A state variable that is used to derive other variables is commonly called a 'single source of truth'.
+// 4. Whenever one state can easily be computed from another, using derived state is preferred.
+//      a. Don't create two state variables if only one is needed.
+// 5. IMPORTANT: If an array contains a list of objects with a prop that needs to be summed/subtracted to derive the total of all the items in the list, use the reduce method to simplify the calculation.
 
 // Lesson 85. Calculating Statistics as Derived State
 
-So instead we can just define a new variable
-
-called also numItems, but we can simply derive it
-
-so we can calculate it based on the items array.
-
-So that simply items.length
-
-and so this works because as soon as the items are updated,
-
-so as soon as this piece of state is updated,
-
-the component will re-render.
-
-And when the component re-renders
-
-that means that the function here is called again.
-
-And therefore then this piece of code here will run again.
-
-And so if a new item has been added then now the item state.
-
-So this array is different
-
-and therefore the length will also be different.
-
-
-So we have two options now.
-
-The first one is to keep numItems here
-
-and pass it as a prop into stats,
-
-but I think what makes more sense
-
-is to actually calculate this state here.
-
-So this derived state inside the stats itself.
-
-Also because we will actually calculate three values
-
-and so if we were to calculate them here
-
-then we would have to pass three props
-
-which doesn't make a lot of sense.
-
-
-So if this is the case,
-
-if there are not even any items in the array,
-
-then it's not even necessary actually
-
-to perform all these calculations
-
-because they will just be zero anyway.
-
-So what I want to do now here is to show you a good use case
-
-of an early return as conditional rendering.
-
-So what we're going to do is to say
-
-if there is no items.length,
-
-then simply return.
-
-
-
-So it's also quite legible here if you ask me.
-
-So when you arrive at this component
-
-maybe you have never seen it before
-
-because one of your coworkers wrote it,
-
-then you can right away see that if there are no items,
-
-well then just return this
-
-and in all other cases then perform the rest of the logic
-
-of the component.
+// 1. Use conditional early returns to prevent renderings/calculations from being performed when no data/state is currently available in a component.
+//      a. If an array has zero length, which means no items/elements, then work should not be done on that array inside a component.
+//          i. Especially, if the purpose of the array is for rendering a list inside the component.
+//          ii. Example: If there are no items, then return, and in all other cases perform the rest of the logic of the component.
 
 // Lesson 86. Sorting Items
 
