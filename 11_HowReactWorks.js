@@ -20,960 +20,174 @@
 //      e. Each instance holds its own state and props and it also has/manages its own lifecycle.
 //          i. A component instance can be born, it can live for some time, and then it will eventually die.
 //      f. Many times the terms component and component instance are used interchangeably.
-
-For example, we just say component life cycle
-
-and not component instance life cycle.
-
-And we also say that a UI is made up of components,
-
-not of component instances,
-
-even though instances
-
-would technically be more accurate.
-
-Okay, so just keep that in mind in the future
-
-when you read documentation
-
-or some stack overflow post or something like that.
-
-But anyway, as React executes the code
-
-in each of these instances,
-
-each of them will return one or more React elements.
-
-So as we learned when we first talked
-
-about JSX behind the scenes, JSX will actually get converted
-
-to multiple React.createElement function calls.
-
-Then as React calls these create element functions
-
-the result will be a React element.
-
-So a React element is basically the result 
-
-of using a component in our code. react elements are the result of the underlying createElement function calls from within the jsx template
-
-It's simply a big immutable JavaScript object
-
-that React keeps in memory.
-
-And we will take a look at this later in our account.
-
-But what is this object actually?
-
-Well, a React element basically contains all the information
-
-that is necessary in order to create DOM elements
-
-for the current component instance.
-
-And so it's this React element that will eventually
-
-be converted to actual DOM elements,
-
-and then painted onto the screen by the browser.
-
-So based on all this, the DOM elements are the actual, final
-
-and visual representation
-
-of the components instance in the browser.
-
-And again, it's not React elements
-
-that are rendered to the DOM.
-
-React elements just live
-
-inside the React app and have nothing to do with the DOM.
-
-They are simply converted to DOM elements
-
-when they are painted on the screen in this final step.
-
-Okay, so this is the journey
-
-from writing a single component to using it multiple times
-
-in our code as a blueprint all the way
-
-until it's converted to a React element,
-
-and then rendered as HTML elements into the DOM.
+//          i. Example: The term component lifecycle is commonly used and not component instance lifecycle.
+//          ii. Example: It is commonly said that the ui is made up of components, not of component instances.
+//      g. As React executes the code in each component instance, each of them will return one or more react elements.
+//          i. Behind the scenes, the jsx of a component will actually get converted to multiple React.createElement() function calls.
+//          ii. Then as react calls these createElement functions the result will be a react element.
+//                  1. A react element is basically the result of using/invoking a component instance in the application code. 
+//          iii. React elements are the result of the underlying createElement function calls that occur based on the jsx template.
+//                  1. They are simply a big immutable js object that react keeps in memory.
+//      h. A react element basically contains all the information that is necessary in order to create dom elements for the current component instance.
+//          i. It is the react element that will eventually be converted to actual dom elements and then painted onto the screen by the browser.
+//      i. Based on these points, the dom elements are the actual, final, and visual representation of a component instance in the browser.
+//      j. Importantly, it's not react elements that are rendered to the DOM.
+//          i. React elements just live inside the react app and have nothing to do with the dom.
+//          ii. They are simply converted to dom elements when they are painted on the screen in this final step.
+//      k. Summary:
+//           i. Write a component in code (i.e. write a blueprint for a component instance).
+//          ii. Use/invoke/execute that component in a jsx template, multiple times if needed (i.e. create a component instance).
+//          iii. The component instance is converted to a react element (i.e. it is converted into the native createElement function calls).
+//          iiii. The react elements are then converted into actual dom elements.
+//          iiiii. The browser then renders the dom elements (i.e. native html elements) as they were described in the original blueprint.
 
 // Lesson 125. Instances and Elements in Practice
 
-So first off, we can actually look
-
-at a component instance simply
-
-by using the component and logging it to the console.
-
-So let's try that out.
-
-So actually right out here we can write JSX like this.
-
-So as soon as React sees this right here,
-
-it will internally call the different content function
-
-and will then return this React element.
-
-
-and while this is not really interesting, we can see
-
-that the type here is of different content.
-
-And so that's exactly the name of the component right here.
-
-We can also see that we didn't pass in any props
-
-but which we actually could.
-
-So let's just do test equals 23.
-
-and so then we should see that right here.
-
-So now in the second one, and indeed there it is.
-
-So again, this is what React internally use
-
-to then later create our dumb elements.
-
-
-// $$typeof
-Now if you're wondering what this weird dollar dollar type
-
-of thing here is, well this is simply a security feature
-
-that React has implemented in order to protect us
-
-against cross-site scripting attacks.
-
-So, notice how this is a symbol and symbols are one
-
-of the JavaScript primitives, which cannot be transmitted
-
-via JSON, or in other words, this means that a symbol
-
-like this cannot come from an API call.
-
-So if some hacker would try to send us a fake React
-
-element from that API, then React would not see
-
-this type of as a symbol.
-
-Again, because symbols cannot be transmitted via JSON.
-
-And so then React would not include that fake React element
-
-into the dumb so protecting us against that kind of attack.
-
-
-// calling components with angle brackers vs parens. Why?
-So why should we write it like this when
-
-we could also write different content like this?
-
-So, basically calling the function ourselves.
-
-Well, there is really nothing stopping us from doing so.
-
-So if we save this, then we actually get a result as well.
-
-Let's just reload here so that we only get
-
-these two outputs.
-
-So one output from here and one from here.
-
-So you see that even here in this case,
-
-we still got a React element like this.
-
-However, it is a very different one.
-
-So this one no longer has the type of different content
-
-and instead it is a diff which is basically
-
-just the content of that component.
-
-So this diff here is now the type of this React element
-
-and we can also see that because the props include
-
-the class name of "tab-content".
-
-So what this means is that right now, React does
-
-no longer see this as a component instance,
-
-and instead it just sees the raw React element,
-
-which is really not what we want.
-
-So, when we write, or actually when we use a component,
-
-we want React to see the component instance
-
-and not the raw output element like this one.
-
-So never do this, what we did right here,
-
-And so now you see that we still only have one
-
-tab content here in our component tree.
-
-And so this happened exactly because of what I explained
-
-before, which is that when we call a component directly
-
-like this, then React no longer sees it
-
-as a component instance.
-
-Now we can also see that the state
-
-that this component manages is actually now
-
-inside the parent state or the parent component.
-
-So, if we check out the tabbed component here,
-
-you see that it has the normal state that it had before
-
-which is this active tab
-
-but it also has some other hooks here which come
-
-from tab content.
-
-So these two are the two hooks that are inside
-
-this component, but they don't really belong here.
-
-So we actually want them to be inside tab content
-
-and not inside, well not here inside the tabbed component.
-
-So what this means again, is that this is here
-
-not really a component because it cannot even manage
-
-its own state at this point.
-
-So, for all these reasons, you should never ever do
-
-what we just did here because this will create
-
-multiple problems such as violating the rules of hooks
-
-that we will talk about later.
-
-So instead, as you already know,
-
-always render it inside the JSX.
-
-So just like this.
-
-And so here we just use the component.
-
-So, basically this blueprint like we have always been doing.
-
-And so then React calls the component
-
-and actually recognizes this as a component instance.
+// 1. React components can be invoked like normal functions and also logged to the console.
+//      a. This approach should NOT be used in react app development.
+//          i. The component instances will not work correctly.
+// 2. The '$$typeof' is a security feature that react has implemented in order to protect against cross-site scripting attacks.
+//      a. This is a symbol and symbols are one of the js primitives, which cannot be transmitted via json.
+//          i. This means that a symbol cannot come from an api call.
+//              1. If a hacker tries to send a fake react element from an api, then react would not see the 'typeof' as a symbol.
+//                  a. Remember: Symbols cannot be transmitted via json.
+//              2. React would not include the fake react element into the dom thereby protecting the app against this type of attack.
+// 3. Calling/invoking a component as a normal js function will still return/create a react element, but the difference is that it will just be the raw react element, which is not helpful.
+//      a. When a react component instance is created, react should see the instance itself and not the raw output element (i.e. react element).
+//          i. When a component is called directly using regular js function call syntax, react no longer sees it as a component instance.
+//          ii. Additionally, state variables that the component instance manages will actually be seen by react as inside the parent component, which is not good for state management.
+//                  1.  This essentially means that the component instance can no longer manage its own state, which means its not really functioning as a component any longer.
+//          iii. For these reasons, never create component instances using regular js function call syntax.
+//                  1. This will create multiple problems such as violating the rules of hooks as well as the issues mentioned above.
+// 4. Always render/call/invoke/use components inside of a jsx template using jsx syntax.
 
 // Lesson 126. How Rendering Works: Overview
 
-So as we build our applications,
-
-what we're really doing
-
-is building a bunch of components.
-
-We then use these components inside other components
-
-as many times as we want
-
-which will cause React to create one
-
-or more component instances of each component.
-
-So these are basically
-
-the actual physical components
-
-that live in our application
-
-and holds state and props.
-
-Now, as React calls each component instance,
-
-each JSX will produce a bunch
-
-of React dot create element function calls
-
-which in turn will produce a React element
-
-for each component instance.
-
-And so this React element
-
-will ultimately be transformed
-
-to DOM elements and displayed
-
-as a user interface on the screen.
-
-So we have a pretty good understanding
-
-of the initial part of this process,
-
-so of transforming components to React elements.
-
-However, what we don't understand yet
-
-is the second part of the process,
-
-so how these React elements actually end up
-
-in the DOM and displayed on the screen.
-
-
-So this process that we're about to study
-
-is started by React each time
-
-that a new render is triggered,
-
-most of the time by updating state
-
-somewhere in the application.
-
-So state changes trigger renders
-
-and so it makes sense
-
-that the next phase is the render phase.
-
-In this phase, React calls our component functions
-
-and figures out how it should update the DOM,
-
-so in order to reflect
-
-the latest state changes.
-
-However, it does actually not update
-
-the DOM in this phase.
-
-And so Reacts definition of render
-
-is very different from what
-
-we usually think of as a render,
-
-which can be quite confusing.
-
-So again, in React, rendering is not
-
-about updating the DOM
-
-or displaying elements on the screen.
-
-Rendering only happens internally inside of React
-
-and so it does not produce any visual changes.
-
-Now, in all the previous sections,
-
-I have always used the term rendering
-
-with the meaning of displaying elements on the screen
-
-because that was just easy to understand
-
-and it just made sense, right?
-
-However, as we just learned,
-
-the rendering that I used to mean
-
-is really this render plus the next phase.
-
-And speaking of that next phase,
-
-once React knows how to update a DOM,
-
-it does so in the commit phase.
-
-So in this phase,
-
-new elements might be placed in the DOM
-
-and already existing elements might get updated
-
-or deleted in order to correctly reflect
-
-the current state of the application.
-
-So it's really this commit phase that is responsible
-
-for what we traditionally call rendering,
-
-not the render phase, okay?
-
-Then finally, the browser will notice
-
-that the DOM has been updated
-
-and so it repaints the screen.
-
-Now this has nothing to do with React anymore
-
-but it's still worth mentioning
-
-that it's this final step that actually produces
-
-the visual change that users see on their screens. browser paint
-
-
-
-All right, so let's now zoom
-
-into each of these different steps,
-
-starting with the triggering of a render. render is triggered
-
-So there are only two ways
-
-in which a render can be triggered.
-
-The first one is
-
-the very first time the application runs
-
-which is what we call the initial render.
-
-And the second one is a state update happening
-
-in one or more component instances
-
-somewhere in the application
-
-which is what we call a re-render. state is updated in one or more component instances (re-render)
-
-And it's important to note
-
-that the render process really is triggered
-
-for the entire application,
-
-not just for one single component.
-
-Now that doesn't mean
-
-that the entire DOM is updated
-
-because remember, in React,
-
-rendering is only about calling the component functions
-
-and figuring out what needs to change in the DOM later.
-
-Now again, this might seem confusing now
-
-because earlier in the course,
-
-I made it seem as though React
-
-only re-renders the component
-
-where the state update happened.
-
-But that's because we were learning
-
-how React works in practice.
-
-And in fact, when we look at what happens in practice,
-
-it looks as if only
-
-the updated component is re-rendered. in practice it looks like reactr only re-renders the component where the state update happens, but thats not how it works behind the scenes
-
-But now we are learning
-
-how React actually works behind the scenes.
-
-And so now we know that React looks
-
-at the entire tree whenever a render happens.
-
-Finally, I just want to mention
-
-that a render is actually not triggered immediately
-
-after a state update happens.
-
-Instead, it's scheduled for when
-
-the JavaScript engine basically
-
-has some free time on its hands.
-
-But this difference is usually
-
-just a few milliseconds
-
-that we won't notice.
-
-There are also some situations
-
-like multiple sets state calls
-
-in the same function where renders will be batched
-
-as we will explore a bit later. there is also batching of multiple setState calls in event handlers
+// 1. Building apps in react is basically building many components and then using those components inside of other components where needed.
+//      a. React will read these components in the jsx template/element and create the actual instances from the component blueprint.
+//          i. These are the actual physical components that live in the application and hold the state variables and props.
+//      b. As React calls each component instance, each jsx template/element will produce the React.createElement() function calls.
+//          i. These will then produce a react element for each component instance.
+//                  1. Each react element will ultimately be transformed to dom elements and displayed as a ui on the screen.
+// 2. React elements are converted and rendered to the dom and then displayed to the ui.
+//      a. This process is started by react each time that a new render is triggered.
+//      b. Most of the time the new render (i.e. re-render) is triggered by updating state somewhere in the application.
+//          i. State changes trigger re-renders and so it makes sense that the next phase is the render phase.
+//      c. In the render phase, react calls the component functions and figures out how it should update the dom in order to reflect the latest state changes to the ui.
+//      d. React does not actually update the dom in this phase.
+//          i. Reacts definition of rendering is very different from what is normally considered rendering.
+//      e. In React, rendering is not about updating the dom or displaying elements on the screen.
+//          i. Rendering only happens internally inside of react and so it does not produce any visual changes.
+//      f. Actual ui rendering includes a commit phase, following the render phase.
+//          i. Once react knows how to update the dom (i.e. the render phase), it does so in the commit phase.
+//          ii. In the commit phase, new elements could be placed in the dom and already existing elements might get updated or deleted in order to correctly reflect the current state of the application.
+//      g. It is the commit phase that is responsible for what is traditionally called rendering.
+//          i. Not the render phase, which can be confusing.
+//          ii. Once the commit phase is completed, the browser will notice that the dom has been updated and then it repaints the screen.
+//                  1. This last part has nothing to do with react, but it's still worth mentioning that it's this final step that actually produces the visual change that users see on their screens. 
+//                      a. This is called 'browser paint'.
+// 3. Steps fro triggering an actual render/re-render:
+//      a. Two ways to trigger/initiate a render:
+//          i. The initial render (i.e. component mount).
+//          ii. A state update (i.e. re-render). 
+//                  1. State is updated in one or more component instances (re-render).
+//      b. It is important to note that the render process is actually triggered for the entire app, not just for one a single component.
+//          i. This doesn't mean that the entire dom is updated on each re-render.
+//                  1. This is because in react rendering is only concerned with the component functions and determining what needs to change in the dom (based on state updates and props???).
+//      c. In practice, it looks as if only the updated component is re-rendered, but thats not how it works behind the scenes.
+//      d. React actually analyzes the entire component tree whenever a render/re-render occurs.
+// 4. It is important to note that a render is actually not triggered immediately after a state update happens.
+//      a. Instead, it's scheduled for when the js engine has some 'free time' to do 'work'.
+//          i. This difference is usually just a few milliseconds that are innoticeable.
+//      b. There are situations like multiple useState setter function calls, within the same handler function, where renders will be batched.
+//          i. There is also 'batching' of multiple setState calls in event handlers.
 
 // Lesson 127. How Rendering Works: The Render Phase
 
-Well, back then I told you
-
-that we can conceptually imagine this
-
-as a new view being rendered on the screen, so into the DOM.
-
-However, now we know that this was technically not true
-
-because rendering is not about the screen or the DOM
-
-or the view, it's just about calling component functions.
-
-I also told you that whenever there is a re-render,
-
-React discards the old component view
-
-and replaces it with a brand new one.
-
-However, that's also technically not true.
-
-So the DOM will actually not be updated
-
-for the entire component instance.
-
-So if those things are not true, then let's now learn
-
-what happens instead and how rendering actually works.
-
-
-how renders are actually performed in the render phase.
-
-So, at the beginning of the render phase
-
-React will go through the entire component tree,
-
-take all the component instances that triggered a re-render
-
-and actually render them, which simply means
-
-to call the corresponding component functions
-
-that we have written in our code.
-
-This will create updated React elements
-
-which altogether make up the so-called virtual DOM.
-
-And this is a term that you might have heard before
-
-and so let's dig a little bit deeper now
-
-into what the virtual DOM actually is.
-
-So on the initial render, React will
-
-take the entire component tree and transform it
-
-into one big React element which will
-
-basically be a React element tree like this one.
-
-And this is what we call the virtual DOM.
-
-So, the virtual DOM is just a tree
-
-of all React elements created
-
-from all instances in the component tree.
-
-And it's relatively cheap and fast to create a tree
-
-like this, even if we need many iterations of it
-
-because in the end it's just a JavaScript object.
-
-Now, virtual DOM is probably the most hyped
-
-and most used term when people describe
-
-what React is and how it works.
-
-But if we think about it, if the virtual DOM
-
-is just the simple object,
-
-it's actually not such a big deal, right?
-
-And that's why the React team has really
-
-downplayed the meaning of this name.
-
-And the official documentation actually no longer
-
-mentioned the term virtual DOM anywhere.
-
-But I'm still using this term here
-
-because everyone still uses it and also
-
-because it just sounds a bit nicer than React element tree.
-
-Also, some people confuse the term with the shadow DOM,
-
-even though it has nothing to do
-
-with the virtual DOM in React.
-
-So the shadow DOM is actually just a browser technology
-
-that is used in stuff like web components.
-
-But anyway, let's now suppose
-
-that there is gonna be a state update in component D,
-
-which will of course trigger a re-render.
-
-That means that React will call the function
-
-of component D again and place the new React element
-
-in a new React element tree.
-
-So, in a new virtual DOM.
-
-But now comes the very important part, which is this.
-
-Whenever React renders a component,
-
-that render will cause all of its child components
-
-to be rendered as well.
-
-And that happens no matter if the props
-
-that we passed down have changed or not.
-
-So again, if the updated components
-
-returns one or more other components,
-
-those nested components will be re-rendered as well,
-
-all the way down the component tree.
-
-This means that if you update the highest component
-
-in a component tree, in this example component A,
-
-then the entire application will actually be re-rendered.
-
-Now, this may sound crazy, but React uses this strategy
-
-because it doesn't know beforehand whether an update
-
-in a component will affect the child components or not.
-
-And so by default, React prefers to play it safe
-
-and just render everything.
-
-Also, keep in mind once again that this does not mean
-
-that the entire DOM is updated.
-
-It's just a virtual DOM that will be recreated
-
-which is really not a big problem
-
-in small or medium sized applications.
-
-
-So what happens next is that
-
-this new virtual DOM that was created
-
-after the state update will get reconciled -> reconciliation + diffing
-
-with the current so-called Fiber tree
-
-as it exists before the state update.
-
-Now this reconciliation is done in React's reconciler
-
-which is called Fiber.
-
-Now that's why we have a Fiber tree.
-
-Then the results of this reconciliation process
-
-is gonna be an updated Fiber tree,
-
-so a tree that will eventually be used to write to the DOM. -> updated fiber tree
-
-So this is a high level overview
-
-of the inputs and the outputs of reconciliation,
-
-but, of course, now we need to understand
-
-what reconciliation is and how it works.
-
-
-so the React element tree for the entire app is cheap
-
-and fast because it's just a JavaScript object?
-
-Well, writing to the DOM is not cheap and fast.
-
-It would be extremely inefficient
-
-and wasteful to always write the entire virtual DOM
-
-to the actual DOM each time that a render was triggered.
-
-Also, usually when the state changes somewhere in the app
-
-only a small portion of the DOM needs
-
-to be updated and the rest of the DOM
-
-that is already present can be reused.
-
-Now, of course, on the initial render
-
-there is no way around creating the entire DOM from scratch
-
-but from there on, doing so doesn't make sense anymore.
-
-So imagine that you have a complex app like udemy.com
-
-and when you click on some button there
-
-then showModal is set to true,
-
-which in turn will then trigger a modal to be shown.
-
-So in this situation, only the DOM elements
-
-for that modal need to be inserted into the DOM
-
-and the rest of the DOM should just stay the same.
-
-And so that's what React tries to do.
-
-Whenever a render is triggered,
-
-React will try to be as efficient as possible
-
-by reusing as much of the existing DOM tree as possible.
-
-
-So how does React actually do that?
-
-How does it know what changed
-
-from one render to the next one?
-
-Well, that's where a process
-
-called reconciliation comes into play.
-
-So reconciliation is basically deciding exactly
-
-which DOM elements need to be inserted, deleted
-
-or updated in order to reflect the latest state changes.
-
-So the result of the reconciliation process
-
-is gonna be a list of DOM operations that are necessary
-
-to update the current DOM with a new state.
-
-Now, reconciliation is processed by a reconciler
-
-and we can say that the reconciler
-
-really is the engine of React.
-
-It's like the heart of React.
-
-So it's this reconciler that allows us
-
-to never touch the DOM directly
-
-and instead simply tell React what the next snapshot
-
-of the UI should look like based on state.
-
-And as I mentioned before, the current reconciler
-
-in React is called Fiber, and this is how it works.
-
-
-So, during the initial render of the application
-
-Fiber takes the entire React element tree,
-
-so the virtual DOM, and based on it
-
-builds yet another tree which is the Fiber tree.
-
-The Fiber tree is a special internal tree where
-
-for each component instance and DOM element in the app,
-
-there is one so-called Fiber. -> internal tree that has a "fiber" for each component instance and DOM element
-
-Now, what's special about this tree
-
-is that unlike React elements in the virtual DOM,
-
-Fibers are not recreated on every render.
-
-So the Fiber tree is never destroyed.
-
-Instead, it's a mutable data structure
-
-and once it has been created during the initial render,
-
-it's simply mutated over and over again
-
-in future reconciliation steps.
-
-And this makes Fibers the perfect place for keeping track
-
-of things like the current component state, props,
-
-side effects, list of used hooks and more.
-
-So the actual state and props of any component instance
-
-that we see on the screen are internally stored
-
-inside the corresponding Fiber in the Fiber tree.
-
-Now, each Fiber also contains a queue of work to do
-
-like updating state, updating refs,
-
-running registered side effects,
-
-performing DOM updates and so on.
-
-This is why a Fiber is also defined as a unit of work.
-
-Now, if we take a quick look at the Fiber tree
-
-we will see that the Fibers are arranged in a different way
-
-than the elements in the React element tree.
-
-So instead of a normal parent-child relationship,
-
-each first child has a link to its parent
-
-and all the other children then have a link
-
-to their previous sibling.
-
-And this kind of structure is called a linked list
-
-and it makes it easier for React to process the work
-
-that is associated with each Fiber.
-
-We also see that both trees include not only React elements
-
-or components, but also regular DOM elements,
-
-such as the h3 and button elements in this example.
-
-So both trees really are a complete representation
-
-of the entire DOM structure, not just of React components.
-
-Now going back to the idea that Fibers are units of work,
-
-one extremely important characteristic
-
-of the Fiber reconciler is that work
-
-can be performed asynchronously.
-
-This means that the rendering process
-
-which is what the reconciler does, can be split into chunks,
-
-some tasks can be prioritized over others
-
-and work can be paused, reused,
-
-or thrown away if not valid anymore.
-
-Just keep in mind
-
-that all this happens automatically behind the scenes.
-
-It's completely invisible to us developers.
-
-There are, however, also some practical uses
-
-of this asynchronous rendering
-
-because it enables modern so-called concurrent features
-
-like Suspense or transitions starting in React 18.
-
-It also allows the rendering process
-
-to pause and resume later so that
-
-it won't block the browser's JavaScript engine
-
-with two long renders, which can be problematic -> long renders will not block the js engine in the browser from running
-
-for performance in large applications.
-
-And again, this is only possible
-
-because the render phase does not produce
-
-any visible output to the DOM yet.
-
-
-but now it's time to talk about what Fiber actually does
+// 1. In react, rendering is not about the screen, the dom, or the view.
+//      a. It's just about calling component functions which will ultimately create react elements.
+// 2. When a re-render occurs, the dom will actually not be updated for the entire component instance.
+// 3. Render phase steps:
+//      a. At the beginning of the render phase, react will analyze the entire component tree.
+//      b. It will take the component instances that triggered a re-render and actually render them.
+//          i. This simply means to call the corresponding component functions that were written in the code (i.e. the component blueprint).
+//      c. This will create updated react elements which altogether make up the so-called virtual dom.
+// 4. Description of the virtual dom:
+//      a. On initial render, react will take the entire component tree and transform it into one big react element.
+//          i. Basically, a react element tree.
+//              1. This is what is referred to as the virtual dom.
+//      b. The virtual dom is just a tree of all react elements created from all instances in the component tree.
+//      c. The virtual dom is relatively cheap and fast to create even if many iterations of it are needed.
+//          i. This is because it's just a js object.
+//      d. The virtual DOM is probably the most hyped and most used term when people describe what react is and how it works.
+//          i. However, if the virtual dom is just a simple js object, it's actually not such a big deal.
+//                  1. That's why the react team has really downplayed the meaning of this name.
+//                      a. The official documentation no longer mentions the term virtual dom anywhere.
+//          ii. Technically, it is simply a react element tree.
+//      e. Shadow dom and virtual dom are two completely different things.
+//          i. The shadow dom is actually just a browser technology that is used in things like web components.
+//      f. When state updates in a component instance a re-render is triggered.
+//          i. This means react will call the function component again for the associated component instance that was updated.
+//          ii. React will then place the newly created react element into a new react element tree (i.e. in a new virtual dom).
+//      g. Whenever react renders a component, that render will cause all of its child components to be rendered as well.
+//          i. That happens no matter if the props that were passed down have changed or not.
+//          ii. If the updated component returns one or more other components, those nested components will be re-rendered as well.
+//                  1. This occurs all the way down the component tree.
+//                      a. This means that if the highest component in a component tree is updated (e.g. the App component), then the entire application will actually be re-rendered.
+//          iii. React uses this strategy because it doesn't know beforehand whether an update in a component will affect the child components or not.
+//                  1. By default, react prefers to play it safe and just render everything.
+//                  2. Keep in mind that this does not mean that the entire dom is updated.
+//                      a. It's just a virtual dom that will be recreated, which is not a big problem in small or medium-sized apps.
+//      h. Once the new virtual dom is created after the state update and subsequent re-render, it will be reconciled with the current fiber tree (ref. reconciliation + diffing).
+//          i. The fiber tree stores the current dom's component tree as it previously existed before the most recent state update and re-render.
+//                  1. Essentially, the old virtual dom is compared with the new virtual dom via the fiber tree.
+//          ii. The reconciliation is performed with a react reconciler called fiber, which is why it is called a fiber tree.
+//          iii. The results of this reconciliation process will be an updated fiber tree.
+//                  1. An updated fiber tree that will eventually be used to write to the dom (i.e. browser paint).
+// 5. Summary of notes up to point 4:
+//      a. The react element tree for the entire app is cheap and fast because it's just a js object.
+//          i. However, writing to the dom is not cheap and fast.
+//          ii. It would be extremely inefficient and wasteful to always write the entire virtual dom to the actual dom each time that a render is triggered.
+//          iii. Additionally, when the state changes somewhere in the app, only a small portion of the dom needs to be updated and the rest of the dom that is already present can be reused.
+//                  1. The initial render is the exception because there is no way around creating the entire dom from scratch.
+//                  2. Example: Imagine a complex app and when a button is clicked a piece of state is updated which will trigger a modal component to be shown to the ui. In this scenario, only the dom elements for that modal need to be inserted into the dom and the rest of the dom should just stay the same. 
+//                      a. This is how react tries to handle dom updates.
+//                          i. Whenever a render is triggered, react will try to be as efficient as possible by reusing as much of the existing dom tree as possible.
+//          iiii. Reconciliation is the process where react decides exactly which dom elements need to be inserted/deleted/updated in order to reflect the latest state changes.
+//          iiiii. The result of the reconciliation process is a list of dom operations that are necessary to update the current dom with a newest state updates.
+//          iiiiii. Reconciliation is processed by a reconciler.
+//                      1. The reconciler is like the engine/heart of react.
+//          iiiiiii. The reconciler allows for never touching the dom directly.
+//          iiiiiiii. Instead, it simply provides react with the next snapshot of what the ui should look like based on the updated state.
+//                      1. Remember: The current reconciler in react is called fiber.
+// 6. Fiber tree summary:
+//      a. On the initial render of the app, fiber takes the entire react element tree (i.e. the virtual dom), and based on that tree, it builds another tree which is called the fiber tree.
+//      b. The fiber tree is a special internal tree where for each component instance and dom element in the app, there is one so-called fiber (i.e. an internal tree that has a "fiber" for each component instance and dom element)
+//      c. What is special about this tree is that unlike react elements in the virtual dom, fibers are not recreated on every render.
+//          i. The fiber tree is never destroyed.
+//          ii. Instead, it's a mutable data structure.
+//          iii. Once it has been created during the initial render, it's simply mutated over and over again in future reconciliation steps.
+//                  1. This makes fibers the perfect place for keeping track of things like the current component state, props, side effects, list of used hooks and more.
+//          iiii. The actual state and props of any component instance that are seen on the screen are internally stored inside the corresponding fiber in the fiber tree.
+//          iiiii. Each fiber also contains a queue of work to do like updating state, updating refs, running registered side effects, performing dom updates and so on.
+//                  1. This is why a fiber is also defined as a unit of work.
+//          iiiiii. Fibers are arranged in a different way than the elements in the react element tree.
+//                  1. Instead of a normal parent-child relationship, each first child has a link to its parent and all the other children have a link to their previous sibling.
+//                      a. This kind of structure is called a linked list and it makes it easier for react to process the work that is associated with each fiber.
+//          iiiiiii. Both trees (i.e. the react element tree and fiber tree) include not only react elements or components, but native dom elements.
+//          iiiiiiii. Both trees are a complete representation of the entire dom structure, not just of react components.
+//          iiiiiiiii. One extremely important characteristic of the fiber reconciler is that work can be performed asynchronously.
+//                          1. This means that the rendering process which is what the reconciler does, can be split into chunks, with some tasks being prioritized over others.
+//                              a. Additionally, work can be paused, reused, or thrown away if not valid anymore.
+//                          2. All of this 'work' happens automatically behind the scenes.
+//                              a. It's completely invisible to developers.
+//          iiiiiiiiii. Some of the practical uses of this asynchronous rendering are modern so-called concurrent features like Suspense or transitions starting in react 18.
+//                              b. It also allows the rendering process to pause and resume later so that it won't block the browser's js engine with renders that take too long, which can be problematic for performance in large applications.
+//                                  i. Long renders will not block the js engine in the browser from running in the browser. 
+//                                  ii. This is only possible because the render phase does not produce any visible output to the dom.
+
+
+but now it's time to talk about what fiber actually does
 
 which is the reconciliation process.
 
@@ -981,9 +195,9 @@ And the best way to explain how reconciliation works
 
 is by using a practical example.
 
-So let's take the virtual DOM
+So let's take the virtual dom
 
-and the corresponding Fiber tree from the last slide
+and the corresponding fiber tree from the last slide
 
 which corresponds to this piece of code right here.
 
@@ -999,7 +213,7 @@ So let's say now that the state is updated to false.
 
 This will then trigger a re-render
 
-which will create a new virtual DOM.
+which will create a new virtual dom.
 
 And in this tree, the modal
 
@@ -1009,7 +223,7 @@ because they are no longer displayed
 
 when showModal is not true.
 
-Also, all remaining React elements are yellow,
+Also, all remaining react elements are yellow,
 
 meaning that all of them were re-rendered.
 
@@ -1023,9 +237,9 @@ are re-rendered as well,
 
 as we just learned a few minutes ago.
 
-But anyway, this new virtual DOM now needs
+But anyway, this new virtual dom now needs
 
-to be reconciled with the current Fiber tree,
+to be reconciled with the current fiber tree,
 
 which will then result in this updated tree
 
@@ -1033,13 +247,13 @@ which internally is called the work in progress tree.
 
 So whenever reconciliation needs to happen,
 
-Fiber walks through the entire tree step by step
+fiber walks through the entire tree step by step
 
 and analyzes exactly what needs to change
 
-between the current Fiber tree
+between the current fiber tree
 
-and the updated Fiber tree based on the new virtual DOM.
+and the updated fiber tree based on the new virtual dom.
 
 And this process of comparing elements step-by-step
 
@@ -1051,25 +265,25 @@ a bit later in the section
 
 because that's actually pretty important in practice.
 
-But anyway, let's quickly analyze our updated Fiber tree
+But anyway, let's quickly analyze our updated fiber tree
 
-where I marked new work that is related to DOM mutations.
+where I marked new work that is related to dom mutations.
 
 So first, the Btn component has some new text
 
 and so the work that will need to be done
 
-in this Fiber is a DOM update.
+in this fiber is a dom update.
 
 So in this case, swapping text from height to rate.
 
 Then we have the Modal, Overlay, h3 and button.
 
-So these were in the current Fiber tree
+So these were in the current fiber tree
 
-but are no longer in the virtual DOM
+but are no longer in the virtual dom
 
-and therefore they are marked as DOM deletions.
+and therefore they are marked as dom deletions.
 
 Finally, we have the interesting case
 
@@ -1081,15 +295,15 @@ of the app component, but it actually didn't change.
 
 And so as a result of reconciliation,
 
-the DOM will not be updated in this case.
+the dom will not be updated in this case.
 
-Now, once this process is over, all these DOM mutations
+Now, once this process is over, all these dom mutations
 
 will be placed into a list called the list of effects
 
 which will be used in the next phase,
 
-so in a commit phase, to actually mutate the DOM.
+so in a commit phase, to actually mutate the dom.
 
 Now, what I showed you here was actually still
 
@@ -1105,17 +319,17 @@ in the high level overview of the render phase.
 
 So we learned that the results of the reconciliation process
 
-is a second updated Fiber tree, plus basically a list
+is a second updated fiber tree, plus basically a list
 
-of DOM updates that need to be performed in the next phase.
+of dom updates that need to be performed in the next phase.
 
-So React still hasn't written anything to the DOM yet
+So react still hasn't written anything to the dom yet
 
 but it has figured out this so-called list of effects.
 
 So this is the final result of the render phase
 
-as it includes the DOM operations that will finally be made
+as it includes the dom operations that will finally be made
 
 in the commit phase, 
 
@@ -1125,7 +339,7 @@ in the commit phase,
 
 So we just finished learning about the render phase
 
-which resulted in a list of DOM updates
+which resulted in a list of dom updates
 
 and this list will now get used in the commit phase.
 
@@ -1141,27 +355,27 @@ so that we can understand what is happening,
 
 not a 100% accurate description
 
-of the algorithms inside React, all right?
+of the algorithms inside react, all right?
 
 But anyway, as you know by now,
 
-the commit phase is where React finally writes to the DOM,
+the commit phase is where react finally writes to the dom,
 
-so it inserts, deletes and updates DOM elements.
+so it inserts, deletes and updates dom elements.
 
 You'll sometimes also read
 
-that React flushes updates to the DOM in this phase.
+that react flushes updates to the dom in this phase.
 
-So basically, React goes through the effects list
+So basically, react goes through the effects list
 
 that was created during rendering,
 
-and applies them one by one to the actual DOM elements
+and applies them one by one to the actual dom elements
 
-that were in the already existing DOM tree.
+that were in the already existing dom tree.
 
-Now riding to the DOM happens all in one go.
+Now riding to the dom happens all in one go.
 
 So we say that the commit phase is synchronous
 
@@ -1169,7 +383,7 @@ unlike the rendering phase, which can be paused.
 
 So committing cannot be interrupted.
 
-Now this is necessary so that the DOM
+Now this is necessary so that the dom
 
 never shows partial results
 
@@ -1185,7 +399,7 @@ It's so that rendering can be paused, resumed, and discarded
 
 and the results of all that rendering
 
-can then be flushed to the DOM in one go.
+can then be flushed to the dom in one go.
 
 Then once the commit phase is completed,
 
@@ -1203,13 +417,13 @@ in order to save precious rendering time.
 
 And with that, we close up the commit phase.
 
-The browser will then notice that the DOM has been changed,
+The browser will then notice that the dom has been changed,
 
 and as a result, it will repaint the screen
 
 whenever it has some idle time.
 
-So this is where these DOM updates are finally made visible
+So this is where these dom updates are finally made visible
 
 to the user in the form of an updated user interface.
 
@@ -1217,7 +431,7 @@ Now, I'm not gonna go into how this phase works
 
 because this is really more
 
-about how browsers work internally, and not React.
+about how browsers work internally, and not react.
 
 
 
@@ -1229,59 +443,59 @@ by whatever browser the user is using.
 
 And the render phase is obviously performed
 
-by the React Library.
+by the react Library.
 
 But what about the commit phase?
 
-We would think that it's also done by React, right?
+We would think that it's also done by react, right?
 
 But actually that's not true.
 
-It's actually a separate library that writes to the DOM,
+It's actually a separate library that writes to the dom,
 
-and it's called React DOM.
+and it's called react dom.
 
 So not very creative, but that's just what it's called.
 
-So in fact, React itself does never touch the DOM, -> does not touch the DOM react only renders. it doesnt know where the render result will go
+So in fact, react itself does never touch the dom, -> does not touch the dom react only renders. it doesnt know where the render result will go
 
 and it actually has no idea where the result
 
 of the render phase will actually be committed and painted.
 
-So React only does the render phase
+So react only does the render phase
 
 but not the commit phase.
 
 And the reason for that is
 
-that React itself was designed to be used independently
+that react itself was designed to be used independently
 
 from the platform where elements will actually be shown, -> react can be used on different platforms (i.e. hosts)
 
-and therefore React can be used
+and therefore react can be used
 
 with many different so-called hosts.
 
 Now up until this point, we have only ever thought
 
-of React in conjunction with a DOM
+of react in conjunction with a dom
 
 because we usually use it to build web application.
 
 And in 90% of the cases,
 
-that's actually what we do with React.
+that's actually what we do with react.
 
 But the truth is
 
-that React is used with other hosts as well.
+that react is used with other hosts as well.
 
 For example, we can actually build
 
 native mobile applications for iOS and Android
 
-using React Native, or we can build videos with React
+using react Native, or we can build videos with react
 
 using a package called Remotion.
 
@@ -1295,7 +509,7 @@ Now, if we think about this,
 
 Renderer is actually a pretty terrible name
 
-because according to React's own terminology,
+because according to react's own terminology,
 
 Renderers do not render,
 
@@ -1303,7 +517,7 @@ but they commit the results of the render phase.
 
 But I think that this Renderer name
 
-comes from a time before React divided
+comes from a time before react divided
 
 the render and the commit phase into two separate phases. -> renderers do not render, they commit the result(s) of the render phase
 
@@ -1317,21 +531,21 @@ But anyway, in all these situations,
 
 the results of the render phase
 
-is not really a list of DOM updates,
+is not really a list of dom updates,
 
 but a list of updates of whatever elements
 
 are used in the host that's being used.
 
-So the term virtual DOM, then,
+So the term virtual dom, then,
 
 also doesn't really make much sense
 
 when we look at it from this angle,
 
-which is just one more reason why the React team prefers
+which is just one more reason why the react team prefers
 
-the more accurate name of React Elementary.
+the more accurate name of react Elementary.
 
 Now, all these details are of course
 
@@ -1339,13 +553,13 @@ not really that important.
 
 What I want you to retain from this slide
 
-is that the React Library is not the one responsible
+is that the react Library is not the one responsible
 
-for writing to the DOM,
+for writing to the dom,
 
-because the DOM is just one of many hosts
+because the dom is just one of many hosts
 
-to which React apps can be committed,
+to which react apps can be committed,
 
 so to which they can be output, basically.
 
@@ -1355,14 +569,14 @@ we have a different package that we can use.
 
 And that's why in our index.js file,
 
-we always import both React and React DOM, right?
+we always import both react and react dom, right?
 
 And so now you know the exact reason why we have to do that.
 
 
 So the whole process of rendering
 
-and displaying a React application on the screen
+and displaying a react application on the screen
 
 starts with a trigger, which can either be
 
@@ -1378,15 +592,15 @@ So this phase starts by rendering all component instances
 
 that need a re-render.
 
-And rendering in React simply means
+And rendering in react simply means
 
 to call the components functions.
 
-This will create one or more updated React elements
+This will create one or more updated react elements
 
-which will be placed in a new virtual DOM,
+which will be placed in a new virtual dom,
 
-which is actually simply a tree of React elements.
+which is actually simply a tree of react elements.
 
 Now, what's really important to remember
 
@@ -1398,13 +612,13 @@ to be rendered as well,
 
 no matter if props changed or not.
 
-This is because React doesn't know
+This is because react doesn't know
 
 whether children have been affected
 
 by the parent re-rendering or not.
 
-Now, next up, this new virtual DOM needs to be reconciled
+Now, next up, this new virtual dom needs to be reconciled
 
 with the current fiber tree.
 
@@ -1414,27 +628,27 @@ before the state update.
 
 This is necessary because it would be slow and inefficient
 
-to destroy and rebuild the entire DOM tree
+to destroy and rebuild the entire dom tree
 
 each time that something on the screen must be updated.
 
-Instead, reconciliation tries to reuse as much of the DOM
+Instead, reconciliation tries to reuse as much of the dom
 
 as possible by finding the smallest number
 
-of DOM updates that reflect
+of dom updates that reflect
 
 the latest state update on the screen.
 
 Now this reconciliation process is done
 
-using a reconciler called Fiber,
+using a reconciler called fiber,
 
 which works with immutable data structure
 
 called the fiber tree.
 
-And in this tree, for each React element and DOM element,
+And in this tree, for each react element and dom element,
 
 there is a fiber, and this fiber holds
 
@@ -1442,13 +656,13 @@ the actual component state, props, and a queue of work.
 
 After reconciliation, this queue of work will contain
 
-the DOM updates that are needed for that element.
+the dom updates that are needed for that element.
 
-Now the computation of these DOM updates is performed
+Now the computation of these dom updates is performed
 
 by a diffing algorithm, which step by step compares
 
-the elements in the new virtual DOM
+the elements in the new virtual dom
 
 with the elements in the current fiber tree,
 
@@ -1460,7 +674,7 @@ so basically of this reconciliation and diffing process,
 
 is a second updated fiber tree
 
-as well as a list of all necessary DOM updates.
+as well as a list of all necessary dom updates.
 
 Now, it's important to note
 
@@ -1472,21 +686,21 @@ and pause and resume some work later.
 
 And this is necessary for concurrent features
 
-and also to prevent the JavaScript engine to be blocked
+and also to prevent the js engine to be blocked
 
 by complex render processes.
 
 But anyway, the output of the render phase,
 
-so the list of DOM updates, will finally actually be written
+so the list of dom updates, will finally actually be written
 
-to the DOM in the commit phase.
+to the dom in the commit phase.
 
-So in this phase, a so-called renderer like React DOM
+So in this phase, a so-called renderer like react dom
 
-will insert, delete, and update DOM elements
+will insert, delete, and update dom elements
 
-so that we end up with an updated DOM
+so that we end up with an updated dom
 
 that reflects the new state of the application.
 
@@ -1494,13 +708,13 @@ And unlike the render phase,
 
 the commit phase is actually synchronous.
 
-So all the DOM updates are performed in one go
+So all the dom updates are performed in one go
 
 in order to ensure a consistent UI over time.
 
 Now finally, once the browser realizes
 
-that the DOM has been updated, it starts a new browser paint
+that the dom has been updated, it starts a new browser paint
 
 in order to visually update
 
@@ -1510,9 +724,9 @@ Okay, and there you have it.
 
 This is how, in a nutshell,
 
-we go from updated React elements all the way
+we go from updated react elements all the way
 
-to an updated DOM and user interface on the screen.
+to an updated dom and user interface on the screen.
 
 // Lesson 129. How Diffing Works
 
@@ -1590,13 +804,13 @@ that it's a bit easier to understand this way.
 
 But anyway, in the case
 
-of a DOM element changing like this, changing simply means
+of a dom element changing like this, changing simply means
 
 that the type of the element has changed
 
 like in this example from a div to a header.
 
-So in a situation like this, React will assume
+So in a situation like this, react will assume
 
 that the element itself plus all its children
 
@@ -1604,7 +818,7 @@ are no longer valid.
 
 Therefore, all these elements will actually be destroyed
 
-and removed from the DOM.
+and removed from the dom.
 
 And that also includes their state, which is really
 
@@ -1612,7 +826,7 @@ important to remember.
 
 So as we see in this example, both the diff element
 
-and the search bar component will be removed from the DOM
+and the search bar component will be removed from the dom
 
 and will then be rebuilt as a header with a brand
 
@@ -1632,7 +846,7 @@ So this effectively resets state
 
 and this has huge implications
 
-for the way that React applications work in practice.
+for the way that react applications work in practice.
 
 And that's why we will see some examples
 
@@ -1640,7 +854,7 @@ of this behavior in the next lecture.
 
 Now, everything we just learned works the exact same way
 
-for React elements, so basically for component instances
+for react elements, so basically for component instances
 
 as we can see in this second example.
 
@@ -1650,9 +864,9 @@ to a profile menu component
 
 and therefore the search bar is again completely destroyed
 
-including its date and removed from the DOM.
+including its date and removed from the dom.
 
-Okay, so this is the first situation. -> react assumes entire sub tree is no longer valid, old components are destroyed and removed from DOM including state and the tree might be rebuilt if the children stayed the same and the state is reset
+Okay, so this is the first situation. -> react assumes entire sub tree is no longer valid, old components are destroyed and removed from dom including state and the tree might be rebuilt if the children stayed the same and the state is reset
 
 The second situation is when between two renders
 
@@ -1668,7 +882,7 @@ at a certain position in the tree is the same as before,
 
 like in these examples right here,
 
-the element will simply be kept in the DOM.
+the element will simply be kept in the dom.
 
 And that includes all child elements
 
@@ -1682,7 +896,7 @@ So again, the same element at the same position
 
 in the tree stays the same and preserves state, and it works
 
-like this for DOM elements and for React elements as well.
+like this for dom elements and for react elements as well.
 
 Now, looking at these examples
 
@@ -1694,19 +908,19 @@ but simply the class name attribute in the diff
 
 and the weight prop in the search power component.
 
-And so what React is gonna do is to simply
+And so what react is gonna do is to simply
 
-mutate the DOM element attributes.
+mutate the dom element attributes.
 
-And in the case of React elements
+And in the case of react elements
 
 it'll pass in the new props, but that's it.
 
-So React tries to be as efficient as possible
+So react tries to be as efficient as possible
 
-and so the DOM elements themselves will stay the same.
+and so the dom elements themselves will stay the same.
 
-They're not removed from the DOM, and even more importantly
+They're not removed from the dom, and even more importantly
 
 the state will not be destroyed. -> element will be kept along with its child elements including their state, new props/attributes are passed if they changed between renders if this is not the desired result the key prop can be used to affect/change this 
 
@@ -1753,7 +967,7 @@ So again, as we keep clicking around these tabs here,
 
 this component instance here is actually not destroyed.
 
-So it stays in the DOM
+So it stays in the dom
 
 and the only thing that changes
 
@@ -1805,7 +1019,7 @@ And so that's because the tab content
 
 that we had here before has been completely destroyed
 
-and removed from the DOM in the meantime.
+and removed from the dom in the meantime.
 
 So while we were at the different content,
 
@@ -1842,13 +1056,13 @@ that we can use to tell the differing algorithm
 
 that a certain element is unique.
 
-And this works for both DOM elements and React elements.
+And this works for both dom elements and react elements.
 
 So in practice, this means that we can give
 
 each component instance a unique identification,
 
-which will allow React to distinguish
+which will allow react to distinguish
 
 between multiple instances of the same component type.
 
@@ -1862,7 +1076,7 @@ is that whenever an element has a stable key,
 
 so a key that stays the same across renders,
 
-the element will be kept in the DOM,
+the element will be kept in the dom,
 
 even if the position in the tree has changed.
 
@@ -1908,7 +1122,7 @@ Well, the two list items that we already had are clearly
 
 still the same, but they will now appear
 
-at different positions in the React Elementary.
+at different positions in the react Elementary.
 
 They're no longer the first and second children
 
@@ -1920,9 +1134,9 @@ but at different positions in the tree.
 
 And so according to the differing rules
 
-that we learned earlier, these two DOM elements
+that we learned earlier, these two dom elements
 
-will be removed from the DOM and then immediately recreated
+will be removed from the dom and then immediately recreated
 
 at their new positions.
 
@@ -1930,7 +1144,7 @@ And this is obviously bet for performance because removing
 
 and rebuilding the same dumb element is just wasted work,
 
-right? But the thing is that React
+right? But the thing is that react
 
 doesn't know that this is wasted work.
 
@@ -1938,7 +1152,7 @@ Of course, we developers intuitively know
 
 that these two elements are actually the same as before
 
-but React has no way of knowing that.
+but react has no way of knowing that.
 
 But what if we could actually change that?
 
@@ -1946,7 +1160,7 @@ Well, that's where keys come into play because remember,
 
 a key allows us developers to uniquely identify an element
 
-so we can give React that information
+so we can give react that information
 
 that it doesn't have on its own.
 
@@ -1998,7 +1212,7 @@ Well, let's remember one of the diffing rules, which says
 
 that if we have the same element at the same position
 
-in the tree, the DOM element and its state will be kept.
+in the tree, the dom element and its state will be kept.
 
 Therefore, what's gonna happen is that the state of question
 
@@ -2024,7 +1238,7 @@ this is where the key prop comes into play once again.
 
 So now, we have a key of q23
 
-in this first question, which allows React
+in this first question, which allows react
 
 to uniquely identify this component instance.
 
@@ -2032,11 +1246,11 @@ Then when a new question appears,
 
 we can give it a different key.
 
-And so by doing this, we tell React
+And so by doing this, we tell react
 
 that this should be a different component instance
 
-and therefore, it should create a brand new DOM element.
+and therefore, it should create a brand new dom element.
 
 And the result of doing this
 
@@ -2076,7 +1290,7 @@ So then each time that this tab content component here
 
 is re-rendered, it'll get a different key.
 
-And so then React will see it
+And so then react will see it
 
 as a unique component instance.
 
@@ -2102,7 +1316,7 @@ So you see that our component state has indeed been reset.
 
 And again, that's just because
 
-React now views this as a completely different instance
+react now views this as a completely different instance
 
 of tab content.
 
@@ -2112,7 +1326,7 @@ because now our dev tools display this key.
 
 And when we move here, then we get another one.
 
-And so, yeah, this is exactly how React
+And so, yeah, this is exactly how react
 
 now makes each of these tab contents here unique
 
@@ -2126,7 +1340,7 @@ each component instance here unique
 
 so that each time that it is rendered
 
-with a new friend, React will see this
+with a new friend, react will see this
 
 as a completely new component instance.
 
@@ -2140,7 +1354,7 @@ that will actually change across the re-renders.
 
 let's actually take a look at the two types
 
-of logic that we can write in React components.
+of logic that we can write in react components.
 
 So, that's render logic and event handler functions.
 
@@ -2221,7 +1435,7 @@ HTTP requests, reading input fields, page navigation,
 and many more. -> update state, perform http requests, read input fields, navigate to other pages, etc.
 
 
-Well, it's important because React requires
+Well, it's important because react requires
 
 that components are pure when it comes to render logic
 
@@ -2248,7 +1462,7 @@ And so this is clearly a side effect.
 
 Other examples of side effects are HTTP requests,
 
-riding to the DOM, setting timers and more.
+riding to the dom, setting timers and more.
 
 The other important functional concept is pure functions,
 
@@ -2314,13 +1528,13 @@ with the outside world at some point, right?
 
 Like a web application that never affects any data
 
-or never writes to the DOM is just completely useless.
+or never writes to the dom is just completely useless.
 
 However, in order to make useful and bug-free applications,
 
 we need to know when and how to create side effects,
 
-which brings us back to React
+which brings us back to react
 
 and its rules for render logic.
 
@@ -2360,7 +1574,7 @@ This means that render logic is not allowed
 
 to perform network requests to create timers
 
-or to directly work with the DOM API.
+or to directly work with the dom API.
 
 For example, listening to events using at event listener.
 
@@ -2374,7 +1588,7 @@ of the component function.
 
 And this is actually the reason why we cannot mutate props,
 
-which remember is one of the hard rules of React.
+which remember is one of the hard rules of react.
 
 And so now you know why that rule exists.
 
@@ -2480,7 +1694,7 @@ how these three pieces of state
 
 are actually updated behind the scenes.
 
-So we might think that, as React sees
+So we might think that, as react sees
 
 the set answer function call,
 
@@ -2502,11 +1716,11 @@ if there are three state variables
 
 being updated in this event handler,
 
-then React would re-render three times, right?
+then react would re-render three times, right?
 
 However, this is actually not how it works.
 
-So this is not how React updates multiple pieces of state
+So this is not how react updates multiple pieces of state
 
 in the same event handler function.
 
@@ -2524,9 +1738,9 @@ are updated in one go.
 
 So they are batched, and only then
 
-will React trigger one single render and commit.
+will react trigger one single render and commit.
 
-And conceptually, it makes sense that React works this way,
+And conceptually, it makes sense that react works this way,
 
 because if we're updating these pieces of state together,
 
@@ -2534,7 +1748,7 @@ it probably means that they should just represent
 
 one new view, and therefore,
 
-React only updates the screen once.
+react only updates the screen once.
 
 So if these date updates belong together,
 
@@ -2550,13 +1764,13 @@ only the final one, which already contains
 
 all the three state updates.
 
-Therefore, the fact that React
+Therefore, the fact that react
 
 automatically batches state updates in this way
 
 is yet another performance optimization
 
-that React gives us out of the box.
+that react gives us out of the box.
 
 Now, batching state updates is extremely useful,
 
@@ -2583,7 +1797,7 @@ Now, at this point in the code,
 
 the render phase has not happened yet.
 
-So React is still reading the function line by line
+So react is still reading the function line by line
 
 to figure out what state needs to be updated,
 
@@ -2601,7 +1815,7 @@ the answer variable will still hold the current state.
 
 So the state before the update,
 
-even though we already told React to update it.
+even though we already told react to update it.
 
 So at this point we say that our state is stale,
 
@@ -2611,11 +1825,11 @@ because in fact, a state update will only be reflected
 
 in the state variable after the re-render.
 
-And so for this reason, we say that updating state in React
+And so for this reason, we say that updating state in react
 
 is asynchronous, and again, it is asynchronous
 
-because React does not give us the updated state variable
+because react does not give us the updated state variable
 
 immediately after the set answer call,
 
@@ -2662,9 +1876,9 @@ Now, so far, we have only talked about batching
 
 in event handler functions, like our reset function.
 
-That's because before React 18,
+That's because before react 18,
 
-React only did automatic batching in event handlers,
+react only did automatic batching in event handlers,
 
 but not in situations that happen
 
@@ -2690,27 +1904,27 @@ in those situations to improve performance, right?
 
 Well, that's actually one of the important features
 
-that React 18 gave us.
+that react 18 gave us.
 
-So before React 18, if this reset function
+So before react 18, if this reset function
 
 was called by a timeout, or by a promise,
 
 state updates inside the function would not be batched.
 
-Instead, in these situations, React would actually
+Instead, in these situations, react would actually
 
 update the state variables one by one, and therefore,
 
 in this case, render three times.
 
-Now another case is handling native events using DOM methods
+Now another case is handling native events using dom methods
 
 such as addEventListener, where state updates
 
 also used to not be batched, but now they are.
 
-So again, if you're using the latest React version,
+So again, if you're using the latest react version,
 
 you will now get automatic batching all the time,
 
@@ -2718,7 +1932,7 @@ everywhere in your code.
 
 And if, for some reason, you are working
 
-with an older version of React, maybe at your work,
+with an older version of react, maybe at your work,
 
 it's important that you know that batching used to work
 
@@ -2732,15 +1946,15 @@ So if you ever find yourself in a situation like that,
 
 you can just wrap the problematic state update
 
-in a ReactDOM.flushSync function,
+in a reactdom.flushSync function,
 
-and React will then exclude that update from batching.
+and react will then exclude that update from batching.
 
 But you will most likely never need this.
 
 I'm just mentioning this here,
 
-so that you know that it exists. -> we can opt out of automatic batching by wrapping a state update in ReactDOM.flushSync()
+so that you know that it exists. -> we can opt out of automatic batching by wrapping a state update in reactdom.flushSync()
 
 // Lesson 136. State Update Batching in Practice
 
@@ -2804,7 +2018,7 @@ was equal to the current state.
 
 And so in that situation,
 
-React will not even try to attempt to update the state,
+react will not even try to attempt to update the state,
 
 and then of course, it will also not re-render
 
@@ -2813,11 +2027,11 @@ the component instance.
 And so that's why, well, nothing happens.
 
 
-When you update a component's state with the same value as the current state, React still runs the component once before blocking subsequent renders. This is due to how React works and its reconciliation process.
+When you update a component's state with the same value as the current state, react still runs the component once before blocking subsequent renders. This is due to how react works and its reconciliation process.
 
-In case the values ​​are identical, React still performs a reconciliation process to ensure that no side effects have been introduced by this update.
+In case the values ​​are identical, react still performs a reconciliation process to ensure that no side effects have been introduced by this update.
 
-It is important to note that React tries to optimize these cases by avoiding updating the DOM if no difference is detected during reconciliation. This means that although the component rendering has been performed, there will be no actual DOM update.
+It is important to note that react tries to optimize these cases by avoiding updating the dom if no difference is detected during reconciliation. This means that although the component rendering has been performed, there will be no actual dom update.
 
 
 
@@ -3030,7 +2244,7 @@ which is proved here by this single render string.
 
 Great.
 
-So again, this proves that in React 18
+So again, this proves that in react 18
 
 batching happens not only inside event handlers,
 
@@ -3041,17 +2255,17 @@ And the same is true for promises and other situations.
 
 And now we got two re-renders.
 
-And so this does actually prove that before React 18,
+And so this does actually prove that before react 18,
 
 automatic batching was not happening inside a setTimeout.
 
-// Lesson 137. How Events Work in React
+// Lesson 137. How Events Work in react
 
-So let's consider this tree of DOM elements,
+So let's consider this tree of dom elements,
 
-and note that this really is a DOM tree,
+and note that this really is a dom tree,
 
-so not a fiber tree or a React element tree.
+so not a fiber tree or a react element tree.
 
 And now, let's say that some event happens,
 
@@ -3107,7 +2321,7 @@ and parent element one by one.
 
 In fact, it's if the event originated
 
-or happened in each of these DOM elements.
+or happened in each of these dom elements.
 
 The second important thing is that by default,
 
@@ -3143,7 +2357,7 @@ from bubbling up any further simply by calling
 
 the stopPropagation method on the event object,
 
-and this works in vanilla JavaScript, and also in React,
+and this works in vanilla js, and also in react,
 
 but it's actually very rarely necessary,
 
@@ -3199,21 +2413,21 @@ and if it did, we can then handle the event
 
 in this central event handler function.
 
-Now, if you took my JavaScript course,
+Now, if you took my js course,
 
 then you will already know how to do this in practice,
 
 because in fact, we do this all the time
 
-in vanilla JavaScript applications.
+in vanilla js applications.
 
-However, in React apps, it's actually not so common
+However, in react apps, it's actually not so common
 
 for us to use this technique,
 
 but that might leave you wondering,
 
-if this is actually not important in React,
+if this is actually not important in react,
 
 then why are we even talking about this?
 
@@ -3225,7 +2439,7 @@ related to events in your applications,
 
 which might actually have to do with event bubbling,
 
-and so as a good React developer,
+and so as a good react developer,
 
 you always want to understand exactly what's going on
 
@@ -3233,7 +2447,7 @@ in order to fix these problems,
 
 and the second reason is that this is actually
 
-what React does behind the scenes with our events,
+what react does behind the scenes with our events,
 
 summary: by default, event handlers listen to events on the target and during the bubbling phase
 
@@ -3250,15 +2464,15 @@ better for performance and memory, as it needs only one handler function
 very common in vanilla js apps, but not as much in react apps
 
 
-So let's consider this same DOM tree,
+So let's consider this same dom tree,
 
 and let's say again that we want to attach
 
 an event handler to one of the buttons,
 
-or even to some other DOM element,
+or even to some other dom element,
 
-and this is what that would look like in React code.
+and this is what that would look like in react code.
 
 So we would simply use the onClick prop
 
@@ -3266,31 +2480,31 @@ to listen for click events, and then pass it a function.
 
 So that's really easy, right?
 
-Now, if we think about how React
+Now, if we think about how react
 
 actually registers these event handlers behind the scenes,
 
 we might believe that it would look something like this.
 
-So React might select a button,
+So react might select a button,
 
 and then add the event handler to that element,
 
 so that sounds pretty logical, right?
 
-However, this is actually not what React does internally.
+However, this is actually not what react does internally.
 
-Instead, what React actually does is to register this
+Instead, what react actually does is to register this
 
 and all other event handler functions
 
-to the root DOM container,
+to the root dom container,
 
-and that root container is simply the DOM element
+and that root container is simply the dom element
 
-in which the React app is displayed.
+in which the react app is displayed.
 
-So if we use the default of Create React App,
+So if we use the default of Create react App,
 
 that's usually the div element with an ID set to route.
 
@@ -3298,11 +2512,11 @@ So again, instead of selecting the button
 
 where we actually placed our event handler,
 
-we can imagine that React selects the route element,
+we can imagine that react selects the route element,
 
 and then adds all our event handlers to that element,
 
-and I say imagine, because the way React
+and I say imagine, because the way react
 
 does all this behind the scenes is actually
 
@@ -3312,7 +2526,7 @@ but that's not really worth diving into here.
 
 The only thing that's worth knowing
 
-is that React physically registers
+is that react physically registers
 
 one event handler function per event type,
 
@@ -3322,7 +2536,7 @@ during the render phase.
 
 So if we have multiple onClick handlers in our code,
 
-React we'll actually somehow bundle them all together
+react we'll actually somehow bundle them all together
 
 and just add one big onClick handler
 
@@ -3334,13 +2548,13 @@ of the fiber tree,
 
 but anyway, what this means is that behind the scenes,
 
-React actually performs event delegation
+react actually performs event delegation
 
 for all events in our applications.
 
-So we can say that React delegates all events
+So we can say that react delegates all events
 
-to the root DOM container,
+to the root dom container,
 
 because that's where they will actually get handled,
 
@@ -3354,7 +2568,7 @@ So again, whenever a click happens on the button,
 
 a new event object is fired off,
 
-which will then travel down the DOM tree
+which will then travel down the dom tree
 
 until it reaches the target element.
 
@@ -3362,7 +2576,7 @@ From there, the event will bubble back up.
 
 Then as soon as the event reaches the root container
 
-where React registered all our handlers,
+where react registered all our handlers,
 
 the event will actually finally get handled
 
@@ -3378,7 +2592,7 @@ until it disappears into nowhere,
 
 and the beauty of this is that it all happens automatically
 
-and invisibly just to make our React apps
+and invisibly just to make our react apps
 
 yet a little bit more performant.
 
@@ -3387,7 +2601,7 @@ yet a little bit more performant.
 
 Now, just one small detail that I want you to notice
 
-is that it's really the DOM tree that matters here,
+is that it's really the dom tree that matters here,
 
 not the component tree.
 
@@ -3397,34 +2611,34 @@ of another component,
 
 that doesn't mean that the same is true
 
-in the displayed DOM tree.
+in the displayed dom tree.
 
 So just keep that in mind when thinking
 
-about bubbling in React applications.
+about bubbling in react applications.
 
 
 So whenever we declare an event handler like this one,
 
-React gives us access to the event object
+react gives us access to the event object
 
-that was created, just like in vanilla JavaScript.
+that was created, just like in vanilla js.
 
-However, in React, this event object is actually different.
+However, in react, this event object is actually different.
 
-So in vanilla JavaScript, we simply get access
+So in vanilla js, we simply get access
 
-to the native DOM event object, for example,
+to the native dom event object, for example,
 
 pointer event, mouse event, keyboard event, and many others.
 
-React, on the other hand, will give us something
+react, on the other hand, will give us something
 
 called a synthetic event,
 
 which is basically a thin wrapper
 
-around the DOM'S native event object,
+around the dom'S native event object,
 
 and by wrapper we simply mean that synthetic events
 
@@ -3444,7 +2658,7 @@ stopPropagation, and preventDefault.
 
 What's special about synthetic events though,
 
-and one of the reasons why the React team
+and one of the reasons why the react team
 
 decided to implement them is the fact
 
@@ -3454,7 +2668,7 @@ making it so that events work in the exact same way
 
 in all browsers.
 
-The React team also decided that all
+The react team also decided that all
 
 of the most important synthetic events actually bubble,
 
@@ -3464,15 +2678,15 @@ which usually do not bubble.
 
 The only exception here is the scroll event,
 
-which does also not bubble in React.
+which does also not bubble in react.
 
 Okay, and now to finish, I want to quickly mention
 
 some differences between how event handlers work
 
-in React and vanilla JavaScript.
+in react and vanilla js.
 
-The first one is that in React, the prop name
+The first one is that in react, the prop name
 
 to attach an event handler are named using camelCase,
 
@@ -3482,13 +2696,13 @@ In HTML, on the other hand,
 
 it would be onclick, all lower case,
 
-and if we used an addEventListener in vanilla JavaScript,
+and if we used an addEventListener in vanilla js,
 
 the event would simply be called click,
 
 so without the on prefix.
 
-Now, in vanilla JavaScript,
+Now, in vanilla js,
 
 whenever we want to stop the default behavior
 
@@ -3502,9 +2716,9 @@ automatically reloading the page when we submit a form.
 
 However, if we would attempt to return faults
 
-in a React event handler, that would simply not work.
+in a react event handler, that would simply not work.
 
-So in React, the only way to prevent the browser's default
+So in react, the only way to prevent the browser's default
 
 behavior is to call preventDefault
 
@@ -3522,7 +2736,7 @@ for example, onClickCapture instead of just onClick,
 
 but most likely, you will never use this,
 
-// Lesson 138. Libraries vs. Frameworks & The React Ecosystem
+// Lesson 138. Libraries vs. Frameworks & The react Ecosystem
 
 Okay, but actually, let's now replace these terms
 
@@ -3532,7 +2746,7 @@ and actually learn what's the difference
 
 between a framework and a library.
 
-So, in the world of JavaScript
+So, in the world of js
 
 a framework is basically a complete structure
 
@@ -3562,17 +2776,17 @@ And so this is not a real downside for some developers.
 
 Now, on the other hand,
 
-we have JavaScript libraries,
+we have js libraries,
 
 which are basically pieces of code
 
 that developers share for other developers to use.
 
-And the prime example here is of course, React,
+And the prime example here is of course, react,
 
 which is what we call a view library,
 
-view because all React does is to draw components
+view because all react does is to draw components
 
 onto a user interface,
 
@@ -3586,29 +2800,29 @@ you will need to include many external third party libraries
 
 for things like routing, styling, HTTP requests, and so on.
 
-So all these functionalities are not part of React itself
+So all these functionalities are not part of react itself
 
 unlike what happens with Angular and other frameworks.
 
 And so this is how this notion
 
-that React is a library ties into the analogy
+that react is a library ties into the analogy
 
 of buying separate ingredients to make sushi.
 
-Because to build a React app,
+Because to build a react app,
 
 we have to choose all these separate libraries.
 
 Now, don't get me wrong here.
 
-We can actually build React apps with just React itself.
+We can actually build react apps with just react itself.
 
 So, without using any libraries,
 
 but that only makes sense for small apps
 
-or while we are still learning React.
+or while we are still learning react.
 
 Now, being able to choose multiple libraries
 
@@ -3632,7 +2846,7 @@ in a framework might not even be necessary.
 
 However, on the other hand,
 
-the implication of this is that as a React developer,
+the implication of this is that as a react developer,
 
 you need to be able to find
 
@@ -3654,17 +2868,17 @@ you will have a very good understanding
 
 of the most important libraries that we usually include
 
-into most React projects,
+into most react projects,
 
 which leads me actually to the next point,
 
-which is React's huge third party library ecosystem.
+which is react's huge third party library ecosystem.
 
-So, React's huge popularity has led to a really,
+So, react's huge popularity has led to a really,
 
 really large ecosystem of libraries that we can include
 
-in our React projects for different needs like routing
+in our react projects for different needs like routing
 
 for single page applications, making http requests,
 
@@ -3690,11 +2904,11 @@ and so these are the ones that we will use later
 
 in the course.
 
-So things like React Router, React Query,
+So things like react Router, react Query,
 
 Redux, styled components, or Tailwind.
 
-Now, many React developers actually do feel overwhelmed
+Now, many react developers actually do feel overwhelmed
 
 by having to take so many decisions and choosing
 
@@ -3704,15 +2918,15 @@ And so this fact, among some other reasons,
 
 has led to the development
 
-of multiple opinionated React frameworks
+of multiple opinionated react frameworks
 
 such as Nextjs, Remix or Gatsby.
 
-So, Nextjs or Remix are React frameworks
+So, Nextjs or Remix are react frameworks
 
-because they are actually built on top of React.
+because they are actually built on top of react.
 
-So they basically extend React's functionality
+So they basically extend react's functionality
 
 and they are opinionated because other developers basically
 
@@ -3722,11 +2936,11 @@ like routing, state management,
 
 or styling into these frameworks.
 
-So, where in a traditional React app,
+So, where in a traditional react app,
 
 we have to make decisions about what libraries to include
 
-in an app built with a React framework.
+in an app built with a react framework.
 
 Some of these important decisions
 
@@ -3754,13 +2968,13 @@ or static site generation.
 
 In fact, we can even describe many of these frameworks
 
-as full stack React frameworks
+as full stack react frameworks
 
 because they include so many features
 
 that we can actually build full stack apps with them,
 
-all while using React as the base layer.
+all while using react as the base layer.
 
 // Lesson 139. Section Summary: Practical Takeaways
 
@@ -3776,7 +2990,7 @@ that will eventually exist on the screen.
 
 When we then use a component,
 
-React creates a component instance,
+react creates a component instance,
 
 which is like an actual physical manifestation
 
@@ -3796,11 +3010,11 @@ that have been built from that blueprint.
 
 Finally, a component instance when rendered,
 
-will return a React element.
+will return a react element.
 
-// What is rendering in React? 
+// What is rendering in react? 
 
-So in React, rendering only means
+So in react, rendering only means
 
 calling component functions
 
@@ -3812,11 +3026,11 @@ So rendering has nothing to do
 
 with actually writing.
 
-So with actually updating the DOM.
+So with actually updating the dom.
 
-Writing to the DOM is actually called
+Writing to the dom is actually called
 
-committing in the React language.
+committing in the react language.
 
 So what I want you to remember here
 
@@ -3850,11 +3064,11 @@ will get re-rendered as well.
 
 Now, this doesn't mean that all children
 
-will get updated in the DOM
+will get updated in the dom
 
 because thanks to reconciliation,
 
-React will check which elements
+react will check which elements
 
 have actually changed between the two renders.
 
@@ -3864,7 +3078,7 @@ Now, one of the main parts of this reconciliation
 
 that I just mentioned is diffing.
 
-So diffing is how React decides
+So diffing is how react decides
 
 which dumb elements need to be added
 
@@ -3872,17 +3086,17 @@ or modified later.
 
 Now, if between two renders,
 
-a certain React element stays
+a certain react element stays
 
 at the same position in the elementary,
 
-the corresponding DOM element
+the corresponding dom element
 
 and the component state
 
 will simply stay the same.
 
-So the DOM will not be modified in this case
+So the dom will not be modified in this case
 
 which is a huge win for performance.
 
@@ -3894,7 +3108,7 @@ or if it changed
 
 to a different element type altogether,
 
-then the DOM element
+then the dom element
 
 and the corresponding state will be destroyed.
 
@@ -3906,7 +3120,7 @@ is the fact that we can actually influence it
 
 by giving elements a key prop,
 
-which then allows React to distinguish
+which then allows react to distinguish
 
 between multiple component instances
 
@@ -3916,7 +3130,7 @@ So when the key on a certain element
 
 stays the same across renders,
 
-the element is kept in the DOM
+the element is kept in the dom
 
 even if it appears
 
@@ -3928,13 +3142,13 @@ we need to use keys in lists
 
 because it will prevent unnecessary recreations
 
-of elements in the DOM.
+of elements in the dom.
 
 Now, on the other hand,
 
 when we change the key between renders,
 
-the DOM element will be destroyed and rebuilt.
+the dom element will be destroyed and rebuilt.
 
 And so this is a very nice trick
 
@@ -3959,7 +3173,7 @@ so that nested component
 
 would always be a new variable basically.
 
-And so this means that React
+And so this means that react
 
 would always see the nested component
 
@@ -3985,7 +3199,7 @@ never inside another component.
 
 Now, the logic that is responsible
 
-for creating DOM elements
+for creating dom elements
 
 so basically logic that produces JSX
 
@@ -4007,29 +3221,29 @@ is inside event handlers and inside useEffect.
 
 Okay, now, after all this rendering,
 
-it's time to finally update the DOM,
+it's time to finally update the dom,
 
 which happens in the commit phase.
 
-However, it's actually not React
+However, it's actually not react
 
 that does this committing
 
-but a so-called renderer called ReactDOM.
+but a so-called renderer called reactdom.
 
 That's why we always need
 
 to include both these libraries
 
-in a React web application project.
+in a react web application project.
 
 We can also use other renderers
 
-to use React on different platforms.
+to use react on different platforms.
 
 For example, to build mobile
 
-or native applications with React native.
+or native applications with react native.
 
 
 let's leave the topics related to rendering behind
@@ -4052,7 +3266,7 @@ will only create one re-render which,
 
 once again, is great for performance.
 
-And since React 18, automatic batching
+And since react 18, automatic batching
 
 even happens inside timeouts,
 
@@ -4076,7 +3290,7 @@ we get access to a so-called synthetic event object,
 
 not the browser's native object.
 
-So the React team created synthetic events
+So the react team created synthetic events
 
 so that events work the exact same way
 
@@ -4097,7 +3311,7 @@ as native browser events.
 The only exception here is the scroll event.
 
 
-let's remember that React is a library
+let's remember that react is a library
 
 and not a framework.
 
