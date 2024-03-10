@@ -50,7 +50,7 @@
 // 5. The distinctions between local and global state will matter more in large applications.
 // 6. One important guideline in state management is to always start with local state and only move to global state if/when needed.
 // 7. Using state starts with realizing when state is needed (i.e. when data needs to be stored and managed).
-// 8. Questions for when to implement state: 
+// 8. Questions for when to implement state:
 //      a. Will this data change at some point in time?
 //          i. If the answer is no, then all that is needed is a regular variable like a const variable.
 //      b. If the data does need to change in the future, the next question is, is it possible to compute or to calculate this new data from an existing piece of state (i.e. data) or props (i.e. data)?
@@ -65,7 +65,7 @@
 //                  1. Place the new piece of state into the component that is being built.
 //                      a. This is the guideline for always starting with local state.
 //      d. With all these questions answered, the decision making process of when to create state has been completed.
-// 9. Summary: 
+// 9. Summary:
 //      a. Most of the time just create a new piece of state using the useState Hook.
 //      b. If the state variable just created is only used by the current component, then simply leave it in that component.
 //          i. However, the state variable might also be necessary for a child component.
@@ -110,7 +110,7 @@
 
 // 1. A controlled element is an element that has its value defined by some state variable.
 //      a. It also has an event handler which listens for an event to occur and then updates the state variable according to the changes made by the event.
-// 2. To update an object in an array: 
+// 2. To update an object in an array:
 //      a. Loop over the array using the map method.
 //      b. For each item of the array, use a conditional that checks for some validating feature of the current item such as an id.
 //          i. The current item with a matching id will be isolated for updating.
@@ -139,701 +139,57 @@
 
 // Lesson 86. Sorting Items
 
-// the option values inside a select tag can be chosen to set the select value????????????
-// by using the event object and selecting the target and then value, i.e. e.target.value
-
-
-Well, basically we will just create a new items
-
-which is then sorted by that criteria.
-
-So we are not going to manipulate the original items array.
-
-That state should stay unchanged.
-
-Instead, we will now use again, derived state
-
-because sorting one array can of course be computed based
-
-on that initial array.
-
-That makes total sense, right?
-
-So once again, we will not create a new state variable here
-
-because that's totally unnecessary.
-
-We will simply create a new variable, and here,
-
-actually a let variable.
-
-So sorted items and we're using a let
-
-so that now we can simply do a couple
-
-of simple if statements.
-
-So if sortBy is equal to input, then this is the default,
-
-right?
-
-And so then in this case,
-
-we can simply say that sorted items should be just equal
-
-to the original items.
-
-So if I do this now,
-
-then we get an error because sorted items is then just
-
-this empty variable that React doesn't know how to render.
-
-
-All right, and now let's write one if
-
-for the other two cases.
-
-So if or sort by change is, that's a description,
-
-then we will want to sort our items actually.
-
-So sortedItems will then become items.
-
-And now first we use slice.
-
-Because with this we basically take a copy
-
-of the array and that's very important
-
-because the sort method is a mutating method.
-
-And so if we didn't do this
-
-then the items would actually get sorted as well.
-
-So we don't want that.
-
-So we use slice dot sort.
-
-And now here I will just write the code because again,
-
-I already explained exactly how this method works
-
-in the review of JavaScript section.
-
-Now in this case, since we want to sort alphabetically,
-
-we can use the localCompare method.
-
-So we want to take a, which is basically one object
-
-of the array, and then we want to take the description
-
-of that, which is one of the properties of each object.
-
-And then since this is a string, we can call localCompare.
-
-And then here we simply pass in another string
-
-which is b dot description.
-
-
-And so something very similar here
-
-sortedItems is going to be equal to items
-
-Taking a copy dot sort .
-
-And then a and b which are basically two objects
-
-of the array which are being compared.
-
-And then since we want to order by the packed status
-
-which is a bullion,
-
-we need to first convert that to a number.
-
-So a dot packed minus number b dot packed,
-
-and that's it.
-
-
-We just implemented this simple feature
-
-but also a very common feature simply
-
-by using the power of derived state.
-
-So again, we didn't create any new piece
-
-of state for the sorted items.
-
-The only state that we need is the sortBy state.
-
-So that React actually has at all times the value
-
-of this input field right here.
-
-And then based on that, we simply create this derived state
-
-of sorted items, which then
-
-in the end is what we render onto the user interface.
-
 // Lesson 87. Clearing the List
 
 // Lesson 88. Moving Components Into Separate Files
 
-we also have to export this function from here.
-
-And remember that in JavaScript,
-
-we can export in two ways.
-
-So we can have named exports,
-
-which would simply be this.
-
-So with this, we would create an export called logo
-
-which we would then have to import
-
-with exactly that name
-
-into the other file,
-
-so into the file where we need it.
-
-But usually, in React apps,
-
-what we do is to use a default export.
-
-So export default, just like this.
-
-And then of course, now if we try to reload this,
-
-we will get an error that, well, not this one.
-
-Yeah, right here.
-
-So we see that the logo is not defined.
-
-And so of course,
-
-that's because now we have to import it right here.
-
-So import.
-
-And here, actually we can use any name that we want.
-
-So because we used a default export.
-
-But of course, we will still call it logo here.
-
-So import logo from,
-
-and then simply the path to that file.
-
-And yes.
-
-And again, we could indeed change the name here to X,
-
-for example, and then here as well,
-
-So it's not enough
-
-to just include it one time anywhere in the code.
-
-You really have to include the parts of React
-
-that you need in each single component file.
-
-
-it's actually time to do it automatically.
-
-So let's again select all of this.
-
-We can even click this triangle here
-
-to collapse the function.
-
-And so then we can select all of it
-
-and then right click here,
-
-and then click on refactor.
-
-And so now here, this gives us the option
-
-to move this function into a new file.
-
-So let's click that.
-
-And you see that a brand new file
-
-with the name of packing list was created.
-
-So VS Code automatically took this function here
-
-and then created a new file
-
-with this exact same name.
-
-And it also automatically imported
-
-all the parts that we need inside this function.
-
-So we have useState and we also have item.
-
-Well, this actually doesn't make a lot of sense
-
-at this point
-
-because the item is still here.
-
-So that's actually not ideal,
-
-but we will fix that in a moment.
-
-So what matters here for now
-
-is that VS Code automatically created this new file,
-
-placed this new component here
-
-and also exported it.
-
-Now it's actually using a named export.
-
-So you can see here
-
-that it's importing it in this other way.
-
-So this is how you do a named import.
-
-But again, we usually in React development,
-
-do default exports.
-
-But of course, the other way is also perfectly fine.
-
-I will just change it here.
-
-Export default.
-
-And then here, I need to change the way I import it.
-
-So getting rid of these curly braces.
-
-we now have one component per file
-
-which makes our component here
-
-a little bit easier to manage.
-
-So then there's not so much scrolling up and down,
-
-but instead,
-
-well, we can develop basically each component
-
-in isolation in its separate file.
-
-Now taking it one step further,
-
-we can also move each of the components
-
-into a new components folder.
-
-So components,
-
-and then let's select all of them actually.
-
-So everything except for index.js
-
-which is not a component
-
-and our CSS file.
-
-Grab them here.
-
-And now we only have one problem
-
-which is the app file cannot be found here in index.js.
-
-So here we need to now fix this path
-
-to components/App.
-
-n the same folder as App.js.
-
-And with this,
-
-we actually finished this project.
+// 1. In vs code a component function can be highlighted and right-clicked and then the refactor option can be selected.
+//      a. The option to move the function into a new file can be selected, which will take that component and its necessary imports and place them into a new file.
+//      b. The necessary exports will be included as well in other files.
+//          i. The components and other functions will be exported and imported as named functions.
+//                  1. Usually in react development, default exports are implemented.
+//      c. Ensure all pathnames are updated and correct for all imports.
 
 // Lesson 89. EXERCISE #1: Accordion Component (v1)
 
-And then here, let's just change this one to title.
-
-So that should work.
-
-And yeah, and with this let's go back to the original
-
-because now we need to start thinking about state.
-
-So remember how we can open and close
-
-each of these boxes here individually,
-
-which basically means that each of these boxes
-
-holds their own state.
-
-So whenever we click here, you see that the UI changes.
-
-So that's the most fundamental thing
-
-that we need to think about whenever the UI changes.
-
-So whenever there is some update here happening in the UI
-
-it means that we need a piece of state.
-
-Now, each of these items here operates
-
-completely independently from the other ones.
-
-So if I open this one here
-
-nothing happens to the other two.
-
-So I can open all of them at the same time
-
-or I can have all of them close, meaning that
-
-again, each of them really operates in an independent way
-
-which means that each of them must hold their own state.
-
-So again, that's because this one can be open
-
-but this one as well.
-
-And so what that means is that we should now define
-
-a state variable in each of these items.
+// 1. Whenever there is some update happening in the ui, it means that a piece of state is needed.
+// 2. When separate component instances of the same component function operate independently of each other, it means that each of them must hold their own state.
+//      a. A state variable should be defined in each instance.
 
 // Lesson 90. The "children" Prop: Making a Reusable Button
 
-So instead of passing in this side here, this emoji,
-
-and the text, which are basically the content
-
-here of this button element,
-
-what if we could simply pass the content
-
-right into the button as well?
-
-Or in other words, what if we could pass simply some JSX
-
-into the component and then the component could use that JSX
-
-and simply display it?
-
-
-Well, we can actually do that in React.
-
-So let's come up here, and notice how up until this point
-
-all our components have always been self-closing.
-
-So we never had, like this,
-
-and then any content, and then closed the element.
-
-So we never had this before, but in fact,
-
-we can do exactly this.
-
-So just like we do with HTML elements
-
-where we have an opening tag,
-
-then some content, and then a closing tag,
-
-we can do exactly the same with React components.
-
-So basically now it is time to give the button element
-
-access to whatever content we wrote
-
-into the opening tag and the closing tag of the react component
-
-And so that's where, finally,
-
-the children prop comes into play.
-
-So, the children prop is a prop that each React component
-
-automatically receives.
-
-And the value of the children prop is exactly
-
-what is between the opening
-
-and the closing tag of the react component.
-
-pass the children prop to the hoc component which is a predefined/reserved keyword in react.
-
-enter js mode and pass the children prop into the curly braces in between the opening and closing tags of the element.
-
-
-Because, this content here of this element
-
-would simply be passed as the children prop into the button.
-
-And then here we use that children prop
-
-and display all that content right here
-
-inside this HTML button.
-
-And with this, we just gained a brand new
-
-and really, really important tool
-
-that is used all the time in React.
-
-It's actually one of its most useful features, I would say.
-
-And the reason for that
-
-is that it allows us to make our components truly reusable.
-
-So with this children prop, I am now able to pass
-
-whatever content I want into this button element.
-
-And the button component doesn't even need to know
-
-what content this is going to be.
-
-All it does is to take the children,
-
-so all the content and all the JSX that we just passed in,
-
-and will simply then render it inside this button component.
-
-And so because of that, we can think of the children prop
-
-as a hole that can be filled by us passing in the content
-
-into that component.
-
-
-So, by using the children prop in the button component,
-
-we basically left an empty hole
-
-right in the component that we could then fill
-
-with any JSX markup that the component receives as children.
-
-But then the question is, how do we pass in these children?
-
-Well, when we include the button component in some JSX,
-
-instead of immediately closing the element,
-
-we can write some more JSX into that element.
-
-So just like we can write any HTML markup
-
-inside other HTML elements, right?
-
-So just like an HTML,
-
-we can write anything that we want between the opening
-
-and the closing tag of the component that we are using.
-
-So, in this example, this piece of JSX creates the elements
-
-that are then the children of the button component,
-
-and they will then be accessible inside that button
-
-as props.children.
-
-So that's why we say it is the children prop.
-
-So, basically, by defining child elements like this,
-
-we are passing them into the button
-
-just like we can pass in any other prop.
-
-The difference is in the way
-
-in which we specify other props.
-
-So, the more regular props, and this one.
-
-So by passing in content
-
-between the opening and the closing tag of an element
-
-we basically fill the hole that we left
-
-in the component by using props.children
-
-in the JSX of that button, so of that button component.
-
-So, if we think about this,
-
-the children prop is really an ideal way
-
-of making reusable and configurable components.
-
-Especially when it comes to the content of the component.
-
-So for example, let's say that we wanted to create
-
-a second, similar button,
-
-but with some other emojis and text.
-
-Well, now that we know about the children prop,
-
-that is really easy.
-
-All we have to do is to pass in some different JSX
-
-and then the button gets completely different content.
-
-And this technique is really, really useful
-
-for building generic components that do not know
-
-about their content before actually being used.
-
-Like, for example, a model window, a generic slider,
-
-or simply a generic button like the one that we just built.
-
-So, again, this button component had absolutely no idea
-
-about the content that it was receiving,
-
-and therefore about the content that it was displaying.
-
-And so this is really amazing
-
-to create generic and reusable components.
-
-So using the children prop like this
-
-is really an extremely powerful technique
-
-that you will need to master as you learn React.
+// 1. Just like html elements that have opening and closing tags, with content in between, the same can be done with react components.
+//      a. This gives parent components access to the child components content via the children prop.
+//          i. Actually, any content including native html elements or text can be passed as children to the parent component in this way.
+// 2. The children prop is a prop that each react component automatically receives.
+//      a. The value of the children prop is exactly what is between the opening and the closing tag of the react component.
+//          i. Pass the children prop to the parent component (i.e. higher order component).
+//              1. 'Children' is a predefined/reserved keyword in react.
+//              2. Enter js mode and pass the children prop between the opening and closing tags of the jsx element of the parent component.
+// 3. This allows for making components truly reusable.
+//      a. Via the children prop, any content can be passed into a parent component.
+//          i. The parent component does not need to know what the content of the children are.
+//                  1. All it does is take the children - all the content and jsx that is passed into it - and render it inside its own jsx template.
+//          ii. The children prop can be thought of as an empty space inside of a highly reusable parent component that can be filled with any content that is needed for a component instance of that reusable component.
+//          iii. (By defining child elements between the opening and closing tags of a parent component - using html and jsx markup including other child component instances - elements can be passed as props to the parent component just like any other prop is passed in via a self-closing component???).
+//                  1. The difference is in the way in which other props are specified.
+//  4. The children prop is an ideal way of making reusable and configurable components.
+//      a. Especially, when it comes to the content of the component.
+//      b. Examples: a modal window, a generic slider, or simply a generic button.
 
 // Lesson 91. More Reusability With the "children" Prop
 
-
-And then again, the children prop.
-
-Which each component, remember,
-
-automatically receives as soon
-
-as we pass in some content between the opening
-
-and the closing tag when we call.
-
-So, when we use the component.
-
-So, this part here is then that empty hole
-
-that we talked about in the last lecture.
-
-And this empty hole can then of course be filled
-
-with whatever we pass in.
-
-And again, whatever we pass in
-
-between the opening and the closing tag of step message.
-
-
-And so now we have again created a reusable component here
-
-that we can use anywhere in our application,
-
-and give it any content that we want.
-
-And it will always, as you see,
-
-display this step here with the number that we gave it,
-
-and then whatever content that we passed into it.
-
-So into the component itself.
-
-
-and then the content itself here with the children prop.
-
-So, if we always just want to pass in a string
-
-this could, of course, also be a normal prop.
-
-But since sometimes we want some other content
-
-like here with some actual JSX, like this span element here.
-
-Well, then we should really take advantage
-
-of the children prop.
-
 // Lesson 92. EXERCISE #2: Accordion Component (v2)
 
-which is the currently open item, and so that means
-
-that we now need to move our state from the item
-
-onto here, the accordion.
-
-
-setting a toggle conditionally in a setter function. a parent component passes down state and setter to child. Child creates standard js boolean var which is determined by current state variable compared to current element
-
-onClick in child updates state variable via setter function, but only if the current js boolean var is false, and this condition is written inside the setter function return value
-should current value of state be used in comparison????
+// 1. (How to set a toggle via a useState setter function:
+//      a. The parent component passes down the necessary state variable and setter function to the child component via props.
+//      b. The child component creates a regular js boolean variable.
+//          i. The value of the boolean variable is determined by comparing the current state variable to the current element the child component receives.
+//      c. An onClick handler function in the child component updates the state variable via the setter function, but only if the current js boolean variable is false.
+//          i. This condition is written via a ternary operator inside of the setter function return value, using the current state value and comparing it to the current boolean variable value.???)
 
 // Lesson 93. CHALLENGE #1: Tip Calculator
 
-create two pieces of state in the direct parent component of two sibling components that are identical but indepenedent with independent state, a piece of state is created by the direct parent for each sibling/child component.
-
-So that's percentage1 plus percentage2,
-
-divided by two,
-
-and then the whole thing divided by 100.
-
-Because here the percentages are these actual values.
-
-So between 0 and 100
-
-but then we need to calculate them between zero and one
-
-because, well, that's how we calculate percentages.
-
-
-And instead by having it as derived state
-
-each time that the component rerenders
-
-as the state is updated, this value will be calculated again
-
-and can then also be rendered here onto the UI.
+// 1. Sometimes it is necessary to create two pieces of state in the direct parent component of two sibling components that are identical, but indepenedent, and require separate state.
+//      a. A piece of state is created by the direct parent for each sibling/child component.
+// 2. By having derived state from a state variable, each time that the component re-renders as the state is updated, the derived state value will be calculated again and the updated value will also be rendered onto the ui.
