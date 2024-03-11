@@ -10,7 +10,7 @@
 //      a. The component is just a regular js function, but it's a function that returns react elements.
 //          i. A component is a function that returns a react element (element tree) usually written as jsx (using jsx syntax).
 //              1. It returns an element tree.
-//          ii. A component is a generic description of the UI.
+//          ii. A component is a generic description of the ui.
 //      b. Essentially think of a component as a blueprint or a template.
 //          i. It's this blueprint that react uses to create/invoke one or multiple component instances.
 //      c. Each time a component is used/executed/invoked somewhere in the code, component instances are created by react.
@@ -185,393 +185,68 @@
 //                              b. It also allows the rendering process to pause and resume later so that it won't block the browser's js engine with renders that take too long, which can be problematic for performance in large applications.
 //                                  i. Long renders will not block the js engine in the browser from running in the browser. 
 //                                  ii. This is only possible because the render phase does not produce any visible output to the dom.
-
-
-but now it's time to talk about what fiber actually does
-
-which is the reconciliation process.
-
-And the best way to explain how reconciliation works
-
-is by using a practical example.
-
-So let's take the virtual dom
-
-and the corresponding fiber tree from the last slide
-
-which corresponds to this piece of code right here.
-
-So in the app component, there is a piece
-
-of state called showModal, which is currently set to true
-
-and you can pause the video here to analyze it
-
-but it's not really necessary.
-
-So let's say now that the state is updated to false.
-
-This will then trigger a re-render
-
-which will create a new virtual dom.
-
-And in this tree, the modal
-
-and all its children are actually gone
-
-because they are no longer displayed
-
-when showModal is not true.
-
-Also, all remaining react elements are yellow,
-
-meaning that all of them were re-rendered.
-
-And do you remember why that is?
-
-That's right.
-
-It's because all children of a re-rendered element
-
-are re-rendered as well,
-
-as we just learned a few minutes ago.
-
-But anyway, this new virtual dom now needs
-
-to be reconciled with the current fiber tree,
-
-which will then result in this updated tree
-
-which internally is called the work in progress tree.
-
-So whenever reconciliation needs to happen,
-
-fiber walks through the entire tree step by step
-
-and analyzes exactly what needs to change
-
-between the current fiber tree
-
-and the updated fiber tree based on the new virtual dom.
-
-And this process of comparing elements step-by-step
-
-based on their position in the tree is called diffing
-
-and we will explore exactly how diffing works
-
-a bit later in the section
-
-because that's actually pretty important in practice.
-
-But anyway, let's quickly analyze our updated fiber tree
-
-where I marked new work that is related to dom mutations.
-
-So first, the Btn component has some new text
-
-and so the work that will need to be done
-
-in this fiber is a dom update.
-
-So in this case, swapping text from height to rate.
-
-Then we have the Modal, Overlay, h3 and button.
-
-So these were in the current fiber tree
-
-but are no longer in the virtual dom
-
-and therefore they are marked as dom deletions.
-
-Finally, we have the interesting case
-
-of the video component.
-
-So this component was re-rendered because it's a child
-
-of the app component, but it actually didn't change.
-
-And so as a result of reconciliation,
-
-the dom will not be updated in this case.
-
-Now, once this process is over, all these dom mutations
-
-will be placed into a list called the list of effects
-
-which will be used in the next phase,
-
-so in a commit phase, to actually mutate the dom.
-
-Now, what I showed you here was actually still
-
-a bit oversimplified, if you can believe that,
-
-but I think that this is more than enough
-
-for you to understand how this process works.
-
-Okay, so that was quite a deep dive, but now we're back here
-
-in the high level overview of the render phase.
-
-So we learned that the results of the reconciliation process
-
-is a second updated fiber tree, plus basically a list
-
-of dom updates that need to be performed in the next phase.
-
-So react still hasn't written anything to the dom yet
-
-but it has figured out this so-called list of effects.
-
-So this is the final result of the render phase
-
-as it includes the dom operations that will finally be made
-
-in the commit phase, 
-
+//      d. The fiber tree facilitates the reconciliation process.
+//          i. How it does this in a practical example:
+//              1. A state update triggers a re-render, which will create a new virtual dom.
+//                  a. Some components may have been removed, added, or updated as a result of the state update.
+//                      i. Remember that all children of a re-rendered element are re-rendered as well.
+//              2. This new virtual dom needs to be reconciled with the current fiber tree, which will then result in an updated tree.
+//                  a. Internally, this updated fiber tree is called the 'work-in-progress' tree.
+//                      i. Whenever reconciliation needs to occur, the fiber reconciler walks through the entire tree step by step and analyzes exactly what needs to change between the current fiber tree and the updated fiber tree based on the new virtual dom.
+//                              1. This process of comparing elements step-by-step based on their position in the tree is called diffing.
+//              3. Based on the analyses of the fiber reconciler, the necessary dom mutations will be placed into a list called the 'list of effects', which will be used in the next phase (i.e. the commit phase).
+//                  a. This list will be used to make the necessary dom mutations displayed to the ui.
+//              4. The results of the reconciliation process is a new and updated fiber tree (i.e. a second tree not the current tree that was used during the reconciliation process), plus a list of dom updates that need to be performed in the commit phase.
+//                  a. React still hasn't written anything to the dom, but it has figured out the 'list of effects' that will be used to make the necessary updates.
+//                      i. This is the final result of the render phase as it includes the dom operations that will finally be made in the commit phase. 
 
 // Lesson 128. How Rendering Works: The Commit Phase
 
-
-So we just finished learning about the render phase
-
-which resulted in a list of dom updates
-
-and this list will now get used in the commit phase.
-
-Now, technically speaking, the current work in progress
-
-fiber tree also goes into this commit phase,
-
-but let's keep it simple here.
-
-So these are more conceptual diagrams
-
-so that we can understand what is happening,
-
-not a 100% accurate description
-
-of the algorithms inside react, all right?
-
-But anyway, as you know by now,
-
-the commit phase is where react finally writes to the dom,
-
-so it inserts, deletes and updates dom elements.
-
-You'll sometimes also read
-
-that react flushes updates to the dom in this phase.
-
-So basically, react goes through the effects list
-
-that was created during rendering,
-
-and applies them one by one to the actual dom elements
-
-that were in the already existing dom tree.
-
-Now riding to the dom happens all in one go.
-
-So we say that the commit phase is synchronous
-
-unlike the rendering phase, which can be paused.
-
-So committing cannot be interrupted.
-
-Now this is necessary so that the dom
-
-never shows partial results
-
-which ensures that the UI always stays consistent.
-
-In fact, that's the whole point of dividing
-
-the entire process into the render phase
-
-and the commit phase in the first place.
-
-It's so that rendering can be paused, resumed, and discarded
-
-and the results of all that rendering
-
-can then be flushed to the dom in one go.
-
-Then once the commit phase is completed,
-
-the work in progress fiber tree becomes
-
-the current tree for the next render cycle.
-
-That's because, remember, fiber trees are never discarded
-
-and never recreated from scratch.
-
-Instead, they are reused
-
-in order to save precious rendering time.
-
-And with that, we close up the commit phase.
-
-The browser will then notice that the dom has been changed,
-
-and as a result, it will repaint the screen
-
-whenever it has some idle time.
-
-So this is where these dom updates are finally made visible
-
-to the user in the form of an updated user interface.
-
-Now, I'm not gonna go into how this phase works
-
-because this is really more
-
-about how browsers work internally, and not react.
-
-
-
-So the browser paint face that we just mentioned
-
-is of course performed
-
-by whatever browser the user is using.
-
-And the render phase is obviously performed
-
-by the react Library.
-
-But what about the commit phase?
-
-We would think that it's also done by react, right?
-
-But actually that's not true.
-
-It's actually a separate library that writes to the dom,
-
-and it's called react dom.
-
-So not very creative, but that's just what it's called.
-
-So in fact, react itself does never touch the dom, -> does not touch the dom react only renders. it doesnt know where the render result will go
-
-and it actually has no idea where the result
-
-of the render phase will actually be committed and painted.
-
-So react only does the render phase
-
-but not the commit phase.
-
-And the reason for that is
-
-that react itself was designed to be used independently
-
-from the platform where elements will actually be shown, -> react can be used on different platforms (i.e. hosts)
-
-and therefore react can be used
-
-with many different so-called hosts.
-
-Now up until this point, we have only ever thought
-
-of react in conjunction with a dom
-
-because we usually use it to build web application.
-
-And in 90% of the cases,
-
-that's actually what we do with react.
-
-But the truth is
-
-that react is used with other hosts as well.
-
-For example, we can actually build
-
-native mobile applications for iOS and Android
-
-using react Native, or we can build videos with react
-
-using a package called Remotion.
-
-And we can even create all kinds of documents
-
-like Word or PDF documents, Figma designs
-
-and many more, using different so-called renderers.
-
-Now, if we think about this,
-
-Renderer is actually a pretty terrible name
-
-because according to react's own terminology,
-
-Renderers do not render,
-
-but they commit the results of the render phase.
-
-But I think that this Renderer name
-
-comes from a time before react divided
-
-the render and the commit phase into two separate phases. -> renderers do not render, they commit the result(s) of the render phase
-
-And so they chose this term of Renderer
-
-because it fits with the common sense
-
-definition of rendering.
-
-But anyway, in all these situations,
-
-the results of the render phase
-
-is not really a list of dom updates,
-
-but a list of updates of whatever elements
-
-are used in the host that's being used.
-
-So the term virtual dom, then,
-
-also doesn't really make much sense
-
-when we look at it from this angle,
-
-which is just one more reason why the react team prefers
-
-the more accurate name of react Elementary.
-
-Now, all these details are of course
-
-not really that important.
-
-What I want you to retain from this slide
-
-is that the react Library is not the one responsible
-
-for writing to the dom,
-
-because the dom is just one of many hosts
-
-to which react apps can be committed,
-
-so to which they can be output, basically.
-
-And for each of these hosts
-
-we have a different package that we can use.
-
-And that's why in our index.js file,
-
-we always import both react and react dom, right?
-
-And so now you know the exact reason why we have to do that.
+// 1. The completion of the render phase results in a list of dom updates
+//      a. This list will now get used in the commit phase.
+//      b. Technically, the current 'work-in-progress' fiber tree also goes into the commit phase.
+// 2. The commit phase is where react finally  writes to the dom,
+//      a. This is the phase where it inserts, deletes and updates dom elements.
+//          i. React 'flushes' updates to the dom in this phase.
+//      b. React goes through the 'effects' list that was created during render phase
+//          i. It applies each 'effect', one by one, to the actual dom elements that were in the already existing dom tree.
+// 3. Writing to the dom happens in one synchronous step.
+//      a. Therefore, the commit phase is synchronous unlike the rendering phase, which can be paused.
+//      b. Committing cannot be interrupted.
+//          i. This is necessary so that the dom never shows partial results, which ensures that the ui always stays consistent.
+//                  1. This is the reason for dividing the entire process into the render phase and the commit phase.
+//                      a. It's so that rendering can be paused, resumed, and discarded.
+//                          i. Then the results of all that rendering can be 'flushed' to the dom in one synchronous step.
+// 4. Once the commit phase is completed, the 'work-in-progress' fiber tree becomes the current tree for the next render cycle.
+//      a. Remember, fiber trees are never discarded and never recreated from scratch. 
+//          i. Instead, they are reused in order to save rendering time.
+//                  1. They are only mutated/upated.
+// 5. The browser will then notice that the dom has been changed, and as a result, it will repaint the screen whenever it has some idle time.
+//      a. This is where the dom updates are finally made visible to the user in the form of an updated ui.
+// 6. The browser paint phase is performed by whichever browser the user is using.
+//      a. The render phase is performed by the react library.
+//      b. The commit phase is handled by a separate library that writes to the dom, and it's called react dom.
+// 7. React itself never touches the actual browser dom. 
+//      a. It does not touch the dom, it only goes as far as handling the render phase as previously mentioned. 
+//      b. It doesnt know where the render result will go.
+//          i. It has no idea where the result of the render phase will actually be committed and painted.
+// 8. The reason for this is that react itself was designed to be used independently from the platform where elements will actually be shown. 
+//      a. React can be used on different platforms (i.e. hosts).
+//      b. Other hosts include react native, remotion, as well as others that handle pdf and word docs, etc.
+// 9. These hosts such as react dom are called renderers.
+//      a. However, they do not handle the render phase.
+//          i. They only commit the results of the render phase.
+//                  1. They handle the commit phase.
+//                      a. Renderers do not render, they commit the result(s) of the render phase.
+//          ii. The term renderer fits with the common sense definition of rendering.
+//                  1. It was also chosen at a time when the render and commit phase were not separated.
+//      b. Therefore, the result of the render phase is not really a list of dom updates
+//          i. It is actually a  list of updates for whatever elements that are used in the selected host.
+//          ii. Therefore, the term virtual dom doesn't make much sense when viewed from this angle.
+//                  1. This is why the term react element tree is preferred.
+// 10. The react library is not responsible for writing to the dom, because the dom is just one of many hosts to which react apps can be committed.
+//      a. There are different packages that can be used for different hosts.
+//          i. This is why react and react dom are both imported in the index.js file of react apps.
 
 
 So the whole process of rendering
@@ -710,7 +385,7 @@ the commit phase is actually synchronous.
 
 So all the dom updates are performed in one go
 
-in order to ensure a consistent UI over time.
+in order to ensure a consistent ui over time.
 
 Now finally, once the browser realizes
 
@@ -1142,7 +817,7 @@ at their new positions.
 
 And this is obviously bet for performance because removing
 
-and rebuilding the same dumb element is just wasted work,
+and rebuilding the same dom element is just wasted work,
 
 right? But the thing is that react
 
@@ -1184,7 +859,7 @@ even though their position in the tree is different.
 
 So, they will not be destroyed.
 
-Entry result will be a bit more of a performant UI.
+Entry result will be a bit more of a performant ui.
 
 Now of course, you won't really notice this difference
 
@@ -2888,7 +2563,7 @@ managing global application state,
 
 styling, managing forms, animations and transitions,
 
-and even entire UI component libraries.
+and even entire ui component libraries.
 
 Now, I will not go over all of them here one by one
 
@@ -2984,7 +2659,7 @@ to our first point,
 
 which is that a component is basically
 
-like a blueprint for a piece of UI
+like a blueprint for a piece of ui
 
 that will eventually exist on the screen.
 
@@ -3018,7 +2693,7 @@ So in react, rendering only means
 
 calling component functions
 
-and calculating what dumb elements need
+and calculating what dom elements need
 
 to be inserted, deleted, or updated later.
 
@@ -3074,271 +2749,39 @@ have actually changed between the two renders.
 
 // What is diffing?
 
-Now, one of the main parts of this reconciliation
-
-that I just mentioned is diffing.
-
-So diffing is how react decides
-
-which dumb elements need to be added
-
-or modified later.
-
-Now, if between two renders,
-
-a certain react element stays
-
-at the same position in the elementary,
-
-the corresponding dom element
-
-and the component state
-
-will simply stay the same.
-
-So the dom will not be modified in this case
-
-which is a huge win for performance.
-
-However, if the element did change
-
-to a different position in the tree
-
-or if it changed
-
-to a different element type altogether,
-
-then the dom element
-
-and the corresponding state will be destroyed.
-
-So they will basically be reset.
-
-Now, one cool thing about the diffing algorithm
-
-is the fact that we can actually influence it
-
-by giving elements a key prop,
-
-which then allows react to distinguish
-
-between multiple component instances
-
-of the same component type.
-
-So when the key on a certain element
-
-stays the same across renders,
-
-the element is kept in the dom
-
-even if it appears
-
-at a different position in the tree.
-
-And so this is the reason why
-
-we need to use keys in lists
-
-because it will prevent unnecessary recreations
-
-of elements in the dom.
-
-Now, on the other hand,
-
-when we change the key between renders,
-
-the dom element will be destroyed and rebuilt.
-
-And so this is a very nice trick
-
-that we can use in order to reset state,
-
-
-Next, we have one very important rule
-
-that you must never ever forget
-
-which is that you should never declare
-
-a new component inside another component.
-
-That's because doing so will recreate
-
-that nested component every time
-
-the parent component re-renders
-
-so that nested component
-
-would always be a new variable basically.
-
-And so this means that react
-
-would always see the nested component
-
-as a brand new component,
-
-and therefore reset its state each time
-
-that the parent's state is updated.
-
-Now, the reason why this happens
-
-is not the important part,
-
-but what matters is that
-
-you should always, always declare.
-
-So you should write new components
-
-at the top level of a file,
-
-never inside another component.
-
-Now, the logic that is responsible
-
-for creating dom elements
-
-so basically logic that produces JSX
-
-is called render logic
-
-and this render logic is not allowed
-
-to produce any side effects.
-
-So render logic can have no API calls,
-
-no timers, no object or variable mutations,
-
-and no state updates.
-
-The only place where side effects are allowed
-
-is inside event handlers and inside useEffect.
-
-Okay, now, after all this rendering,
-
-it's time to finally update the dom,
-
-which happens in the commit phase.
-
-However, it's actually not react
-
-that does this committing
-
-but a so-called renderer called reactdom.
-
-That's why we always need
-
-to include both these libraries
-
-in a react web application project.
-
-We can also use other renderers
-
-to use react on different platforms.
-
-For example, to build mobile
-
-or native applications with react native.
-
-
-let's leave the topics related to rendering behind
-
-and quickly talk about state and events.
-
-So when we have multiple state updates
-
-inside an event handler function,
-
-all these state updates will be batched.
-
-So basically, they will happen all at once
-
-and this is super important because it means
-
-that multiple related state updates
-
-will only create one re-render which,
-
-once again, is great for performance.
-
-And since react 18, automatic batching
-
-even happens inside timeouts,
-
-promises, and native event handlers.
-
-Now, one super important practical implication of this
-
-is that we cannot access a state variable
-
-immediately after we update it
-
-which is why we say
-
-that state updates are asynchronous.
-
-Next up, when we use events
-
-inside event handler functions,
-
-we get access to a so-called synthetic event object,
-
-not the browser's native object.
-
-So the react team created synthetic events
-
-so that events work the exact same way
-
-across all browsers
-
-and the main difference between synthetic
-
-and native events is that
-
-most synthetic events do actually bubble
-
-and that includes the focus, blur,
-
-and change events, which do usually not bubble
-
-as native browser events.
-
-The only exception here is the scroll event.
-
-
-let's remember that react is a library
-
-and not a framework.
-
-This means that you can basically assemble
-
-your applications using your favorite
-
-or the community's favorite third-party libraries
-
-and this is great for flexibility
-
-and creative freedom.
-
-The downside of this freedom is that
-
-there is an basically infinite amount
-
-of libraries that you can choose from.
-
-And so you need to first find and then learn
-
-all these additional libraries that you need.
-
-However, that's not that big of a problem
-
-because you will learn
-
-about the most commonly used libraries
-
-in the main projects of this course.
+// 1. Diffing is how react decides which dom elements need to be added or modified later.
+//      a. If between two renders, a certain react element stays at the same position in the react element tree, the corresponding dom element and component instance state will remain the same.
+//          i. The dom will not be modified in this case, which is a bonus for performance.
+//      b. If the element did change to a different position in the tree, or if it changed to a different element type altogether, then the dom element and the corresponding state will be destroyed.
+//          i. They will be reset.
+// 2. The diffing algorithm can be influenced by providing elements a key prop, which then allows react to distinguish between multiple component instances of the same component type.
+//      a. When the key on a certain element stays the same across renders, the element is kept in the dom even if it appears at a different position in the tree.
+//          i. This is the reason why keys should be used when rendering lists of elements.
+//              1. Each element should be provided a unique key (i.e. identifier)
+//          ii. This will prevent unnecessary recreations of elements in the dom.
+//      b. Alternatively, when the key is changed between renders, the dom element will be destroyed and rebuilt.
+//          i. This is an effective way to reset the state of a component instance.
+// 3. Never declare a new component inside another component.
+//      a. Doing so will recreate that nested component every time the parent component re-renders
+//          i.Therefore, that nested component would always be a new variable on every render/re-render.
+//          ii.This means that react would always see the nested component as a brand new component, and reset its state each time that the parent's state is updated.
+// 4. Always declare/write new components at the top level of a file and never inside of another component.
+// 5. The logic that is responsible for creating dom elements (i.e. the logic that produces jsx) is called render logic.
+//      a. Render logic is not allowed to produce any side effects.
+//          i. Render logic cannot have API calls, timers, object or variable mutations, and no state updates.
+//      b. The only place where side effects are allowed is inside event handlers and inside useEffect hooks.
+// 6. When there are multiple state updates inside an event handler function, all these state updates will be batched.
+//      a. They will happen all at once
+//          i. This is important to understand, because it means that multiple related state updates will only create one re-render 
+//                  ii. This is positive for performance.
+// 7. Since react 18, automatic batching even happens inside timeouts, promises, and native event handlers.
+//      a. One important practical implication of this is that state variables cannot be immediately accessed after an update.
+//          i. This is why state updates are considered asynchronous.
+// 8. When using events inside event handler functions access is given to a so-called synthetic event object, not the browser's native object.
+//      a. The react team created synthetic events so that events work the exact same way across all browsers
+//           i. The main difference between synthetic and native events is that most synthetic events do actually bubble and that includes the focus, blur, and change events, which usually do not bubble as native browser events.
+//                  1. The only exception is the scroll event.
+//  9. React is a library and not a framework.
+//      a. This means react apps can be assembled using third-party libraries, which is great for flexibility and creative freedom.
+//          i. The downside of this freedom is that there is an almost infinite amount of libraries to choose from.
+//                  1. This is why its important to first find and learn all the additional libraries that will be needed for apps.
