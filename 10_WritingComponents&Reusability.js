@@ -176,20 +176,9 @@
 // 3. For data that does not change in the application, it can be placed outside/above the function component.
 //      a. The data will not be re-evaluated/regenerated each time the component re-renders.
 //          i. This will improve the performance of the application.
-
-consider data such as inline style objects that do not depend on props. if they do depend on props then they will need to be included in the function And so, now I actually need to take this object here
-
-back into the component because now we will specify
-
-some properties which will depend on the props.
-
-And so the props are, of course, only accessible
-
-inside the component.
-
-So, then this object will have to live
-
-inside the component as well.
+//          ii. Example: inline style objects that do not depend on props.
+// 4. If a variable depends on props or state then it will need to be included in the function component.
+//      a. Props and state are only accessible inside a component.
 
 // Lesson 116. Creating the Stars
 
@@ -215,470 +204,66 @@ inside the component as well.
 // Lesson 118. Props as a Component API
 
 // 1. When building a reusable component, carefully consider what props the component needs.
-But in any case, it's always a good idea
-
-to think in terms of there being a creator
-
-and a consumer of a component,
-
-so, different entities, even if it's just yourself.
-
-So, basically, the creator
-
-is the person building a component,
-
-and defining what props the component can accept.
-
-While the consumer uses the component
-
-somewhere in the application,
-
-by specifying values for the props.
-
-Now, the reason for the separation
-
-between creator and consumer,
-
-even if you're just working on your own,
-
-is that if we have this mindset,
-
-we can think of the component's props
-
-as the public API of the component.
-
-So, as a component creator,
-
-when we choose what props
-
-the consumer is allowed to pass in,
-
-we are essentially defining
-
-the public interface of our component.
-
-And, at the same time, we are choosing
-
-how much complexity of the component
-
-we want to expose to the consumer of the API.
-
-Because, in the end,
-
-a component is basically just an abstraction.
-
-So, we are encapsulating a part of the UI
-
-and the associated logic into a component,
-
-and allow consumers
-
-to interact with that component via props.
-
-That's basically what creating a new component is.
-
-But, anyway, when we decide about
-
-what props to allow in a component,
-
-we need to find a good balance on how strict we want to be.
-
-So about how many props we want to enable for configuration.
-
-// too few props 
-but it might also make the component not flexible enough,
-
-or maybe even straight out, useless for the consumer.
-
-// too many 
-
-But the point is that exposing so many props,
-
-might make the component
-
-way too hard to use for the consumer,
-
-because we're exposing too much complexity.
-
-And speaking of complexity,
-
-you'll end up with very complex code,
-
-if you want to allow so many props.
-
-So, when deciding on the right API for your components,
-
-try to strike the right balance
-
-between too little and too many props,
-
-and a balance that works well,
-
-for both the creator,
-
-and the consumer of the component,
-
-based on the project's needs.
-
-Now, if for some reason
-
-you really need to expose so many props,
-
-make sure to at least provide
-
-some good default values for many of them.
+//      a. It's always a good idea to think in terms of there being a 'creator' and a 'consumer' of a component.
+//          i. That is, different entities, even if it's just yourself.
+//          ii. The creator is the person building a component, and defining what props the component can accept.
+//          iii. The consumer uses the component somewhere in the application, by specifying values for the props.
+//      b. The reason for the separation between creator and consumer is that this mindset allows for thinking of component props as a type of public api for the component.
+//          i. The component creator can choose what props the consumer is allowed to pass in.
+//          ii. The creator is essentially defining the public interface of the component.
+//          iii. The creator is choosing how much complexity of the component to expose to the consumer of the api.
+//      c. The component is basically just an abstraction.
+//          i. An abstraction that encapsulates a part of the ui and the associated logic into a component.
+//                  1. This allows consumers to interact with that component via props.
+//                  2. This is what creating a new component is typically about.
+//      d. It is important to find a good balance on how many props a component should receive.
+//          i. That is, how many props are necessary to enable configuration of a component effectively.
+//          ii. Too few props might make the component not flexible enough, while too many props might make the component too complex.
+//                  1. Too many props equals very complex code.
+//          iii. If lots of props are needed in a component, be sure to provide default values where needed.
 
 // Lesson 119. Improving Reusability With Props
 
-it's a good idea to provide default values.
-
-So, we already learned that we can do that
-
-by providing the default values during destructuring.
-
-
-Now, sometimes consumers or users of the component
-
-want to have even more control over the styling.
-
-So, sometimes it's a good idea to allow users
-
-to pass in a class name.
-
-accept the class name,
-
-and by default, it will just be an empty class name,
-
-and then, we just edit here to the overall container.
-
-So class name
-
-and then, class name like this.
-
-So, for example, if the user wants to somehow change
-
-the font style, they can do that right inside
-
-this class name that they pass in,
-
-and so, that class name will then be added here.
-
-It will then change the font family of our component.
-
-
-So really, really important to always give default values.
-
-is to just check if messages.length
-
-is equal to the maxRating.
-
-And if that is the case, then that means
-
-that a messages array was passed in.
-
-And if not, then we just do exactly what we had before.
-
+// 1. It's important to provide good default values for props on components.
+//      a. The default values can be provided during destructuring of the props.
+// 2. Sometimes consumers like to have more control over the styling of a component.
+//      a. Therefore, it may be useful to have the component receive a className prop.
+//          i. This will allow the consumer to pass in a className to add styles.
+//          ii. By default, it should just be an empty className.
 
 // and that is to allow the consumer to set a default rating.
 
-So basically, we will initialize our rating state
-
-with whatever default rating comes into the prop.
-
-And if that prop is not specified,
-
-then that's simply exactly the zero that we had before.
-
-Now, maybe you heard or read that we should never initialize
-
-state from props.
-
-However, this is only true if you want the state variable
-
-to stay in sync with that passed in props,
-
-or in other words, if you want the state value
-
-to update in case that the prop value is also updated.
-
-However, that is clearly not the case here.
-
-So, we are really only using this defaultRating here
-
-basically as seed data,
-
-so really just as the initial state,
-
-and we don't care whether this value here
-
-maybe changes somewhere else in the application,
-
-so outside this component.
-
-And, therefore, this is perfectly fine and normal to do.
-
-All right, so it's really no problem to initialize
-
-your state based on a prop.
-
-So this was more relevant in the old days of React
-
-before we had hooks, but now,
-
-that's really no longer a problem.
-
-
-For example, we could say that
-
-we want the colors here to change according to the rating,
-
-or we could allow for some different spacing
-
-between the stars.
-
-We could also allow the consumer to specify on
-
-which site this text label here appears.
-
-So maybe they want it on the left or at the top
-
-or at the bottom here,
-
-// ???
-
-passing in a setter function as a prop from parent to the ratings child component 
-
-an onSetRating
-
-handler.
-
-And so, in this case, what this component wants to pass in
-
-is simply this function right here.
-
-And this one by default doesn't need any
-
-default value
-
-And now, it's very simple.
-
-All we have to do here is, on the handle rating,
-
-is to not only set the internal rating,
-
-but also to basically set the external rating.
-
-So, we can now just say onSetRating.
-
-also set that external rating.
-
-And with this, we now gave the outside test component,
-
-basically, the ability to get access to that internal state
-
-right inside this component.
-
-Okay, and now, if we change this here,
-
-you see that it did, indeed, get updated to seven.
-
-So, this additional configuration,
-
-so this final prop that we updated here,
-
-or that we actually added here to our component,
-
-was really, really important
-
-because without this, this component would really just be
-
-presentational in the end.
+// 1. Technically, state should never be initialized from props.
+//      a. However, this is only true if the state variable needs to stay in sync with the passed in prop,
+//          i. That is, if the state value should be updated when the prop value is updated.
+//      b. However, for some instances, the prop data is only being used as a kind of 'seed' data.
+//          i. The data is just required for the initial state, and it is unimportant following that initial assignment to the state variable.
+//          ii. In these cases, it is not a problem to initialize state based on a prop.
+//          iii. This was more relevant in the old react apps before hooks.
 
 // Lesson 120. PropTypes
 
-So with proptypes, we can basically specify the type
-
-of value that we expect the consumer
-
-of the component to pass in for each of the props.
-
-
-For example, we can define that this max rating
-
-here really must be a number and nothing else.
-
-And this is what we call type checking.
-
-So again, checking each type of the prop
-
-and specifying what type they need to have.
-
-Now, if you really care about this, you should actually just
-
-use TypeScript instead of JavaScript.
-
-
-
-and for that we import the proptypes object
-
-from the proptypes package.
-
-So there's no need to install this proptypes package here
-
-in this case because Create-React-App already comes
-
-with this package pre-installed.
-
-But we do need to import it here.
-
-So just as we did here, because it is actually
-
-a separate package from React itself.
-
-
-Now, okay. And now in order to do the type checking,
-
-let's use our component.
-
-So that's star rating.
-
-And then on this component
-
-we specify the proptypes property.
-
-And here it's important that we write it with a lower case.
-
-So proptypes net then here we then assign
-
-those proptypes an object.
-
-So, again, we imported proptypes here with the capital P
-
-but the property name here is with this lowercase p.
-
-Okay. And now here for each of the props,
-
-we can specify the type.
-
-
-And then now we actually use that proptypes object
-
-that we imported in the very beginning.
-
-And so now all we need to do is to use one
-
-of the validators that is inside this object.
-
-So here we can simply say proptypes.number, and that's it.
-
-
-And so then here we get this problem or this warning here
-
-which says invalid prop of max rating.
-
-And that's because it has the type
-
-of string instead of the expected number.
-
-And it is these warnings right here that will then
-
-allow other developers to catch bugs like this
-
-
-these propTypes are declared outside of the function component they are used in
-
-
-Now, we can also chain the is required property here
-
-which just as the name says
-
-will then make this prop required.
-
-So somewhere here, we probably have one without.
-
-Yeah, so this one doesn't have the max rating.
-
-And then immediately we get this warning down here.
-
-All right, but in our case, we actually
-
-have some default values
-
-for all of our props already defined.
-
-And so it doesn't make sense then to mark
-
-any of them as required.
-
-So by default, you shouldn't use this one.
-
-So instead just use default values
-
-for all or most of your props.
-
-
-And so we basically have one of these validators here
-
-for all the types that we can imagine. strings arrays, numbers, func for functions, objects, etc, bool for Boolean, 
-
-
-So proptypes and this one is a func,
-
-which stands for function.
-
-
-And as you see here, adding proptypes is also a nice way
-
-of documenting our components because this type
-
-definition right here makes it really obvious what kind
-
-of data we are expecting.
-
-this was mostly just to show you
-
-that you can use this yourself
-
-in case that you have some component like this
-
-which you want to make highly reusable
-
-across multiple applications
-
-or even just inside one application.
+// 1. With proptypes, specify the type of value that is expected to be passed in for each of the props, by the consumer of the component.
+//      a. Alt defintion: With proptypes, the type of value (i.e. data type) expected for a prop can be set.
+//          i. The consumer of the component will then be made aware of any incorrect data types they may enter for the props of a component.
+//      b. This is called 'type checking'.
+//      c. Check each type of the prop and specify what type is required.
+// 2. TypeScript should be used instead of js if this is a real concern.
+// 3. How to use proptypes:
+//      a. Import the proptypes object from the proptypes package.
+//          i. Create-react-app already comes with this package pre-installed.
+//              1. It is a separate package from react itself.
+//      b. Specify the proptypes property.
+//          i. It's important that it is written in lowercase.
+//          ii. Import proptypes with a capital p but the property name is with a lowercase p.
+//      c. Then for each of the props, specify the type.
+//      d. Use the proptypes object that was imported.
+//      e. Use one of the validators that is inside the proptypes object (e.g. strings, numbers, func, arrays, objects, bool).
+//          i. These validator will provide warningsto allow other developers to catch bugs.
+//      f. These propTypes are declared outside of the function component they are used in.
+//      g. Chain the isRequired property, which will then make the prop required.
+//          i. If props have default values for their props then the isRequired property is not necessary.
+// 4. Adding proptypes is a good way of documenting components because the type definition makes it obvious what kind of data is expected.
+// 5. Proptypes are useful for highly reusable components that are used across multiple applications.
 
 // Lesson 121. CHALLENGE #1: Text Expander Component
-
-We will then usually have the text directly in here,
-
-for example, instead of relying on the props
-
-and on default values of those props.
-
-But, again, here we are striving for maximum reusability.
-
-
-And, again, this is necessary,
-
-because we want this component here
-
-to be 100% reusable and standalone.
-
-So, it cannot depend on any external styles.
-
-
-So, this text expander component is now highly reusability
-
-and it hides all the complexity from the user,
-
-so from the consumer of this component,
-
-which again is really nice and really important.
-
-So, as the developer of this component,
-
-then we chose the public API, basically,
-
-and therefore allowed the user
-
-to customize it to their needs.

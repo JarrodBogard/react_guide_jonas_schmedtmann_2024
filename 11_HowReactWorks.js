@@ -247,137 +247,31 @@
 // 10. The react library is not responsible for writing to the dom, because the dom is just one of many hosts to which react apps can be committed.
 //      a. There are different packages that can be used for different hosts.
 //          i. This is why react and react dom are both imported in the index.js file of react apps.
-
-
-So the whole process of rendering
-
-and displaying a react application on the screen
-
-starts with a trigger, which can either be
-
-the initial render of the app or, a state update
-
-in one of the component instances.
-
-This then triggers the render phase
-
-which does not produce any visual output.
-
-So this phase starts by rendering all component instances
-
-that need a re-render.
-
-And rendering in react simply means
-
-to call the components functions.
-
-This will create one or more updated react elements
-
-which will be placed in a new virtual dom,
-
-which is actually simply a tree of react elements.
-
-Now, what's really important to remember
-
-about this process is that rendering a component
-
-will cause all of its child components -> rendering a component also renders all of its child components
-
-to be rendered as well,
-
-no matter if props changed or not.
-
-This is because react doesn't know
-
-whether children have been affected
-
-by the parent re-rendering or not.
-
-Now, next up, this new virtual dom needs to be reconciled
-
-with the current fiber tree.
-
-So with the representation of the elementary
-
-before the state update.
-
-This is necessary because it would be slow and inefficient
-
-to destroy and rebuild the entire dom tree
-
-each time that something on the screen must be updated.
-
-Instead, reconciliation tries to reuse as much of the dom
-
-as possible by finding the smallest number
-
-of dom updates that reflect
-
-the latest state update on the screen.
-
-Now this reconciliation process is done
-
-using a reconciler called fiber,
-
-which works with immutable data structure
-
-called the fiber tree.
-
-And in this tree, for each react element and dom element,
-
-there is a fiber, and this fiber holds
-
-the actual component state, props, and a queue of work.
-
-After reconciliation, this queue of work will contain
-
-the dom updates that are needed for that element.
-
-Now the computation of these dom updates is performed
-
-by a diffing algorithm, which step by step compares
-
-the elements in the new virtual dom
-
-with the elements in the current fiber tree,
-
-so to see what has changed.
-
-So the final result of the render phase,
-
-so basically of this reconciliation and diffing process,
-
-is a second updated fiber tree
-
-as well as a list of all necessary dom updates.
-
-Now, it's important to note
-
-that the render face is asynchronous
-
-so fiber can prioritize and split work into chunks -> work can be split, prioritized, paused, resumed
-
-and pause and resume some work later.
-
-And this is necessary for concurrent features
-
-and also to prevent the js engine to be blocked
-
-by complex render processes.
-
-But anyway, the output of the render phase,
-
-so the list of dom updates, will finally actually be written
-
-to the dom in the commit phase.
-
-So in this phase, a so-called renderer like react dom
-
-will insert, delete, and update dom elements
-
-so that we end up with an updated dom
-
-that reflects the new state of the application.
+// 11. The whole process of rendering and displaying a react application on the screen starts with a trigger.
+//      a. The trigger can either be the initial render of the app or, a state update in one of the component instances.
+//          i. This then triggers the render phase which does not produce any visual output.
+//          ii. This phase starts by rendering all component instances that need a re-render.
+//                  1. Rendering in react simply means to call the components functions.
+//          iii. This will create one or more updated react elements which will be placed in a new virtual dom (i.e. a react element tree)
+//      b. It is important to remember that rendering a component will cause all of its child components to be re-rendered as well.
+//          i. Rendering a component also renders all of its child components no matter if their props changed or not.
+//          ii. This is because react doesn't know whether children have been affected by the parent re-rendering or not.
+//      c. Next, the new virtual dom needs to be reconciled with the current fiber tree.
+//          i. That is, with the representation of the react element tree before the state update.
+//          ii. This is necessary because it would be slow and inefficient to destroy and rebuild the entire dom tree each time that something on the screen needs to be updated.
+//          iii. Instead, reconciliation tries to reuse as much of the dom as possible by finding the smallest number of dom updates that reflect the latest state update on the screen.
+//          iiii. The reconciliation process is done using a reconciler called fiber, which works with a mutable data structure called the fiber tree.
+//          iiiii. In this tree, for each react element and dom element, there is a fiber.
+//                      1. This fiber holds the actual component state, props, and a queue of work.
+//          iiiiii. After reconciliation, the queue of work will contain the dom updates that are needed for that element.
+//          iiiiiii. The computation of these dom updates is performed by a diffing algorithm, which step by step compares the elements in the new virtual dom with the elements in the current fiber tree to see what has changed.
+//          iiiiiiii. The final result of the render phase (i.e. the reconciliation and diffing process), is an updated (second???) fiber tree as well as a list of all necessary dom updates.
+//          iiiiiiiii. It's important to note that the render phase is asynchronous.
+//                          1. This is so fiber can prioritize and split work into chunks.
+//                              a. Work can be split, prioritized, paused, and resumed later.
+//                          2. This is necessary for concurrent features and also to prevent the js engine from being blocked by complex render processes.
+//          iiiiiiiiii. The output of the render phases (i.e. the list of dom updates) will be written to the dom in the commit phase.
+//          iiiiiiiiiii. In this phase, a so-called renderer like react dom will insert, delete, and update dom elements so that the dom is updated to reflect the new state of the application.
 
 And unlike the render phase,
 
@@ -2653,99 +2547,19 @@ all while using react as the base layer.
 
 // Lesson 139. Section Summary: Practical Takeaways
 
-// What is a component? 
-
-to our first point,
-
-which is that a component is basically
-
-like a blueprint for a piece of ui
-
-that will eventually exist on the screen.
-
-When we then use a component,
-
-react creates a component instance,
-
-which is like an actual physical manifestation
-
-of a component, which contains props,
-
-state, effects, and more.
-
-So following the analogy of the blueprint,
-
-the component is like a blueprint for a house
-
-and the component instances
-
-are like the actual houses
-
-that have been built from that blueprint.
-
-Finally, a component instance when rendered,
-
-will return a react element.
-
-// What is rendering in react? 
-
-So in react, rendering only means
-
-calling component functions
-
-and calculating what dom elements need
-
-to be inserted, deleted, or updated later.
-
-So rendering has nothing to do
-
-with actually writing.
-
-So with actually updating the dom.
-
-Writing to the dom is actually called
-
-committing in the react language.
-
-So what I want you to remember here
-
-is that each time a component instance
-
-is rendered and re-rendered,
-
-the function is simply called again.
-
-// But what actually triggers a render to happen?
-
-Well, as you should probably know already,
-
-only the initial app render
-
-and state updates can cause a render
-
-which will happen for the entire application.
-
-So even though it might look
-
-as if only one single component is rendered,
-
-the process is actually executed for all components.
-
-Now, when a component instance
-
-does get re-rendered, all its children
-
-will get re-rendered as well.
-
-Now, this doesn't mean that all children
-
-will get updated in the dom
-
-because thanks to reconciliation,
-
-react will check which elements
-
-have actually changed between the two renders.
+// 1. A component is basically like a blueprint for a piece of ui that will eventually exist on the screen.
+// 2. When a component is used/called, react creates a component instance, which is likened to a physical occurrence of a component that contains props, state, effects, and more, for that specific instance.
+// 3. Following the analogy of the blueprint, the component is like a blueprint for a house, and the component instances are like the actual houses that have been built from that blueprint.
+// 4. A react component instance when rendered, will return a react element.
+// 5. In react, rendering only means calling component functions and computing which dom elements need to be inserted, deleted, or updated later.
+// 6. Rendering has nothing to do with actually writing to and updating the dom.
+// 7. Writing to the dom is actually called committing in the react language.
+// 8. Each time a component instance is rendered and re-rendered, the function is simply called again.
+// 9. Only the initial render, and state updates, can cause a render, which will happen for the entire application.
+// 10. Even though it might look as if only one single component is rendered, the process is actually executed for all components.
+// 11. When a component instance gets re-rendered, all its children will get re-rendered as well.
+// 12. This doesn't mean that all children will get updated in the dom.
+// 13. With reconciliation, react will check which elements have actually changed between the two renders.
 
 // What is diffing?
 
