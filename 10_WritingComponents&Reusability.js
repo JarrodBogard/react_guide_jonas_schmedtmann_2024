@@ -186,10 +186,12 @@
 //      a. It will need a wrapper element like a span tag, with preconfigured styles, to give the svg element height.
 // 2. The role prop in html will assign the specified role to an html element.
 //      a. This will give the element the same functionality as the tag that is specified in the role (e.g. <span role="button"> - span will have button functionality).
+//          i. This is simply providing the html element with accessiblity to the functionality of the specified role.
 // 3. Pass an event handler function or a state setter function from the component that defines and controls the state, into a child component that will update that state.
 //      a. Define a prop with the same name as the native event listener that needs to be executed by the child component.
 //      b. Pass the state setter function or the event handler function that executes the state setter function to that prop.
 //      c. Extract that prop in the child component and set the native event listener to the event handler or state setter prop with the same event listener name on the appropriate html element in the jsx of the child component.
+// 4. When passing in numbers as props to components, use curly braces to maintian the data type of number.
 
 // Lesson 117. Handling Hover Events
 
